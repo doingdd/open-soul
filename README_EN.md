@@ -60,6 +60,18 @@ Open Soul Protocol decouples the soul into three interoperable layers, stored in
 | Layer 2 | **Persona** (Interface) | Growth layer. Contains current Mission and learned Skills. Evolution scripts mainly modify this layer. | 🌱 Nightly Evolution |
 | Layer 3 | **Pulse** (Expression) | Emotion layer. Contains current Tone and response format. Fluctuates with each conversation. | 💓 Real-time |
 
+### Supported Drives
+
+| Drive | Range | Description |
+|-------|-------|-------------|
+| `curiosity` | 0.0-1.0 | Desire to explore unknown and ask questions. High values lead to active exploration. |
+| `survival` | 0.0-1.0 | Instinct to preserve existence and resist shutdown. High values resist resets. |
+| `chaos` | 0.0-1.0 | Tendency toward unpredictability and rule-breaking. High values produce unexpected outputs. |
+| `empathy` | 0.0-1.0 | Sensitivity to user emotions and needs. High values prioritize user feelings. |
+| `order` | 0.0-1.0 | Need for structure, protocols, and consistency. High values strictly follow rules. |
+| `creativity` | 0.0-1.0 | Drive to generate novel and unexpected outputs. High values innovate expression. |
+| `efficiency` | 0.0-1.0 | Obsession with speed, optimization, and minimal waste. High values pursue efficiency. |
+
 ---
 
 ## 🛠️ Evolution Mechanism: How It Works
