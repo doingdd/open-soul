@@ -1,6 +1,7 @@
 import yaml
 import glob
 import sys
+import re
 from jinja2 import Template, Environment, Undefined
 
 # 定义一个宽松的 Undefined 类，防止模板因为无关变量报错
@@ -28,7 +29,8 @@ def test_rendering():
     # 2. 预处理模板
     # render.md 第一行通常是 {% set soul = fs.read(...) %}
     # 在 Python 测试中，我们手动注入 soul 变量，所以要把这一行注释掉或删掉，防止报错
-    template_content = template_content.replace("{% set soul = fs.read", "{# mocked fs.read")
+    # 使用正则把整行替换成 Jinja2 注释
+    template_content = re.sub(r'\{%\s*set\s+soul\s*=\s*fs\.read\([^)]*\)\s*%\}', '{# soul variable injected by test #}', template_content)
 
     # 3. 准备 Jinja2 环境
     env = Environment(undefined=SilentUndefined)
