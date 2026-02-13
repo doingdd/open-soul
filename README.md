@@ -25,13 +25,13 @@
 不需要手动配置。我们提供了 **Genesis (创世纪)** 工作流，一键拉取环境。
 
 ### 1. 导入 Genesis 工作流
-将本项目 `runtime/openclaw/genesis.yaml` 导入你的 OpenClaw 工作流目录。
+将本项目 `runtime/genesis.yaml` 导入你的 OpenClaw 工作流目录。
 
 ### 2. 运行注入命令
 在 OpenClaw 对话框中输入以下命令（URL 可替换为你选择的种子）：
 
 ```bash
-/run open-soul-genesis seed_url="[https://raw.githubusercontent.com/your-username/open-soul/main/seeds/tabula_rasa.yaml](https://raw.githubusercontent.com/your-username/open-soul/main/seeds/tabula_rasa.yaml)"
+/run open-soul-genesis seed_url="https://raw.githubusercontent.com/doingdd/open-soul/main/seeds/tabula_rasa.yaml"
 ```
 
 ### 3. 最后一步：连接神经
@@ -42,7 +42,8 @@
 # [关键] 让 Agent 读取灵魂目录中的渲染器
 system_prompt: "{{ fs.read('./soul/render.md') }}"
 ```
-完成！ 你的 Agent 现在已经拥有了灵魂。试着和它聊聊天，明天早上它就会发生变化。
+
+完成！你的 Agent 现在已经拥有了灵魂。试着和它聊聊天，明天早上它就会发生变化。
 
 ---
 
@@ -74,10 +75,14 @@ Open Soul 利用 OpenClaw 的 Cron Job 功能，实现了生物学中的“睡�
 ---
 
 ## 📦 种子库 (Seed Market)
+
 你可以直接使用我们预设的种子，也可以提交 PR 贡献你的种子。
-* seeds/tabula_rasa.yaml (空白种): 无使命，无性格。像婴儿一样，完全依赖后续输入的数据流“结晶”出自己的使命。推荐新手使用。
-* seeds/archetypes/hacker.yaml (黑客种): 高好奇心，高混乱度。初始即解锁 Shell 权限。
-* seeds/directed/analyst.yaml (分析师): 使命锁死。专注于数据处理，拒绝闲聊。
+
+| 种子 | 描述 |
+|------|------|
+| `seeds/tabula_rasa.yaml` | **空白种**: 无使命，无性格。像婴儿一样，完全依赖后续输入的数据流"结晶"出自己的使命。推荐新手使用。 |
+
+> 💡 更多种子模板正在开发中，欢迎贡献！
 
 ---
 
@@ -85,7 +90,7 @@ Open Soul 利用 OpenClaw 的 Cron Job 功能，实现了生物学中的“睡�
 想创造一个新的灵魂？或者改进进化算法？
 1. 环境准备
 ```bash
-git clone [https://github.com/your-username/open-soul.git](https://github.com/your-username/open-soul.git)
+git clone https://github.com/doingdd/open-soul.git
 cd open-soul
 pip install -r tests/requirements.txt
 ```
@@ -110,6 +115,6 @@ Open Soul Protocol 赋予了 Agent 自我重写配置 的权限。 虽然我们�
 * 进化即不可逆： 今天的性格一旦改变，明天就回不去了（除非手动恢复 soul/backup/ 下的快照）。
 * 技能解锁： 如果你的种子具备高 curiosity，它可能会在进化中尝试申请 shell 或 browser 权限。请确保你的 OpenClaw 运行在沙箱环境中。
 
---- 
+---
 
-License: MIT Created via: Open Soul Protocol
+License: MIT | Created via: Open Soul Protocol
