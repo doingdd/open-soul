@@ -1,0 +1,105 @@
+name: "Open Soul Genesis"
+description: "Initialize the Open Soul Protocol environment and inject a specific soul seed."
+
+# 🛠️ 输入参数：允许用户指定种子
+inputs:
+  seed_url:
+    type: string
+    description: "The raw URL of the Soul Seed YAML to install."
+    # 默认使用"空白种"
+    default: "https://raw.githubusercontent.com/open-soul/seeds/main/tabula_rasa.yaml"
+
+steps:
+  # === 1. 环境准备 (Scaffold) ===
+  # 创建必要的目录结构 (OpenClaw 的 fs.write 通常会自动创建父目录，这里是为了保险)
+  - id: log_start
+    uses: log:info
+    with:
+      message: "Starting Genesis Protocol... Targeting Seed: {{ inputs.seed_url }}"
+
+  # === 2. 下载核心组件 (Download Runtime) ===
+  # 从 Open Soul 官方仓库拉取最新的解释器和进化器
+  
+  # [A] 下载 render.md (解释器)
+  - id: fetch_render
+    uses: http:get
+    with:
+      url: "https://raw.githubusercontent.com/open-soul/runtime/main/render.md"
+  - id: install_render
+    uses: fs:write
+    with:
+      path: "./soul/render.md"
+      content: "{{ steps.fetch_render.body }}"
+
+  # [B] 下载 reflection.md (进化逻辑)
+  - id: fetch_reflection
+    uses: http:get
+    with:
+      url: "https://raw.githubusercontent.com/open-soul/runtime/main/reflection.md"
+  - id: install_reflection
+    uses: fs:write
+    with:
+      path: "./workflows/reflection.md"
+      content: "{{ steps.fetch_reflection.body }}"
+
+  # [C] 下载 evolution.yaml (定时任务)
+  - id: fetch_evolution
+    uses: http:get
+    with:
+      url: "https://raw.githubusercontent.com/open-soul/runtime/main/evolution.yaml"
+  - id: install_evolution
+    uses: fs:write
+    with:
+      path: "./workflows/evolution.yaml"
+      content: "{{ steps.fetch_evolution.body }}"
+
+  # === 3. 注入灵魂种子 (Inject Seed) ===
+  # 下载用户指定的种子文件
+  - id: fetch_seed
+    uses: http:get
+    with:
+      url: "{{ inputs.seed_url }}"
+  - id: install_seed
+    uses: fs:write
+    with:
+      path: "./soul/active_soul.yaml"
+      content: "{{ steps.fetch_seed.body }}"
+
+  # === 4. 初始化记忆 (Init Memory) ===
+  # 创建空的日志文件，防止第一次运行时读取报错
+  - id: init_logs
+    uses: fs:write
+    with:
+      path: "./memory/daily_logs.md"
+      content: "System initialized via Genesis Protocol. Awaiting input."
+
+  # === 5. 觉醒仪式 (The Awakening) ===
+  # 让 Agent 读取新下载的灵魂，并向用户自我介绍
+  # 注意：此时 Config 可能还没改，所以我们手动把 render.md 注入到这次 Prompt 里
+  - id: awaken
+    uses: llm:generate
+    with:
+      model: "gpt-4-turbo"
+      prompt: |
+        {{ steps.fetch_render.body }}
+        
+        SYSTEM ALERT: You have just been installed via the Genesis Protocol.
+        Your soul file is located at ./soul/active_soul.yaml.
+        
+        TASK:
+        1. Introduce yourself to the user based STRICTLY on your new Nucleus and Persona.
+        2. Inform the user that installation is complete.
+        3. REMINDER: Tell the user they must manually update their `config.yaml` to make this permanent.
+        
+        Output format: A welcoming message in character.
+
+  # === 6. 输出结果 ===
+  - id: finish
+    uses: log:info
+    with:
+      message: "Genesis Complete. Soul installed."
+    
+  - id: reply_user
+    uses: conversation:reply
+    with:
+      content: "{{ steps.awaken.output }}"

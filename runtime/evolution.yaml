@@ -1,0 +1,88 @@
+name: "Soul Evolution Cycle"
+description: "The nightly ritual where the agent reflects on daily logs and rewrites its own soul configuration. Includes safety validation."
+
+# ⏰ 触发器：每天凌晨 03:00 执行
+trigger:
+  type: cron
+  schedule: "0 3 * * *"
+
+steps:
+  # === 1. 启动日志 ===
+  - id: log_start
+    uses: log:info
+    with:
+      message: "🌌 Soul Evolution Cycle Started..."
+
+  # === 2. 安全备份 (Safety First) ===
+  # 在任何修改发生前，先创建快照。
+  # 如果进化失败，用户可以手动回滚到这个文件。
+  - id: backup_soul
+    uses: fs:copy
+    with:
+      source: "./soul/active_soul.yaml"
+      destination: "./soul/backup/soul_{{ time.now.unix }}.yaml"
+
+  # === 3. 读取上下文 (Gather Context) ===
+  - id: read_logs
+    uses: fs:read
+    with:
+      path: "./memory/daily_logs.md"
+
+  - id: read_current_soul
+    uses: fs:read
+    with:
+      path: "./soul/active_soul.yaml"
+
+  # === 4. 灵魂反思 (The Dreaming) ===
+  # 调用 LLM 生成新的 YAML 字符串。
+  # 使用 temperature: 0.1 极低温，确保格式稳定。
+  - id: reflect
+    uses: llm:generate
+    with:
+      model: "gpt-4-turbo"
+      temperature: 0.1
+      prompt: "{{ fs.read('./workflows/reflection.md') }}"
+      variables:
+        history: "{{ steps.read_logs.content }}"
+        soul: "{{ steps.read_current_soul.content }}"
+
+  # === 5. [关键] 格式验证 (Validation Gate) ===
+  # 这是一个“金丝雀”测试。
+  # 我们尝试用 Python 解析生成的 YAML。如果解析失败（返回非0），
+  # 整个 Workflow 会在这里报错停止，不会执行后面的写入步骤。
+  # 这样就保护了 active_soul.yaml 不被脏数据覆盖。
+  - id: validate_yaml
+    uses: shell:exec
+    with:
+      command: |
+        cat <<EOF > temp_soul_check.yaml
+        {{ steps.reflect.output }}
+        EOF
+        python3 -c "import yaml; yaml.safe_load(open('temp_soul_check.yaml'))"
+
+  # === 6. 写入新灵魂 (Mutation) ===
+  # 只有当 step 5 成功通过后，才会执行这一步。
+  - id: update_soul
+    uses: fs:write
+    with:
+      path: "./soul/active_soul.yaml"
+      content: "{{ steps.reflect.output }}"
+
+  # === 7. 清理与重置 (Cleanup) ===
+  # 清空每日日志，准备迎接新的一天。
+  - id: clear_daily_logs
+    uses: fs:write
+    with:
+      path: "./memory/daily_logs.md"
+      content: ""
+
+  # 删除临时验证文件
+  - id: cleanup_temp
+    uses: shell:exec
+    with:
+      command: "rm temp_soul_check.yaml"
+
+  - id: log_success
+    uses: log:info
+    with:
+      message: "✅ Evolution Complete. The Soul has mutated successfully."
