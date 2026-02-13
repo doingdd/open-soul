@@ -48,11 +48,14 @@ system_prompt: "{{ fs.read('./soul/render.md') }}"
 ---
 
 ## 🧬 核心架构：灵魂三定律
-Open Soul Protocol 将灵魂解耦为三个互操作层级，存储于 soul/active_soul.yaml：
-层级,名称 (Concept),定义与作用,变更频率
-Layer 1,Nucleus (内核),不可变 DNA。 包含底层驱动力（好奇心、混乱度）和第一原则（Prime Directives）。,🔒 极低
-Layer 2,Persona (交互),生长层。 包含当前使命 (Mission) 和已习得技能 (Skills)。进化脚本主要修改这一层。,🌱 每晚进化
-Layer 3,Pulse (表现),情绪层。 包含当前的语调 (Tone) 和回复格式。随每轮对话波动。,💓 实时
+
+Open Soul Protocol 将灵魂解耦为三个互操作层级，存储于 `soul/active_soul.yaml`：
+
+| 层级 | 名称 | 定义与作用 | 变更频率 |
+|------|------|-----------|---------|
+| Layer 1 | **Nucleus** (内核) | 不可变 DNA。包含底层驱动力（好奇心、混乱度）和第一原则（Prime Directives）。 | 🔒 极低 |
+| Layer 2 | **Persona** (交互) | 生长层。包含当前使命 (Mission) 和已习得技能 (Skills)。进化脚本主要修改这一层。 | 🌱 每晚进化 |
+| Layer 3 | **Pulse** (表现) | 情绪层。包含当前的语调 (Tone) 和回复格式。随每轮对话波动。 | 💓 实时 |
 
 ---
 
