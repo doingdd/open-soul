@@ -1,5 +1,7 @@
 # 🌌 Open Soul Protocol
 
+[English](./README_EN.md) | 简体中文
+
 > **"Code is static. Souls are fluid."**
 >
 > **为 OpenClaw 赋予可进化、可移植的数字灵魂。**

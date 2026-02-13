@@ -1,5 +1,7 @@
 # 🌌 Open Soul Protocol
 
+English | [简体中文](./README.md)
+
 > **"Code is static. Souls are fluid."**
 >
 > **Empowering OpenClaw agents with evolvable, portable digital souls.**
