@@ -85,11 +85,14 @@ Open Soul leverages OpenClaw's Cron Job feature to implement the biological "sle
 
 You can use our preset seeds directly or contribute your own via PR.
 
-| Seed | Description |
-|------|-------------|
-| `seeds/tabula_rasa.yaml` | **Blank Slate**: No mission, no personality. Like an infant, it completely relies on subsequent data streams to "crystallize" its own mission. Recommended for beginners. |
+| Seed | Type | Description |
+|------|------|-------------|
+| `seeds/tabula_rasa.yaml` | Blank Slate | No mission, no personality. Like an infant, it completely relies on subsequent data streams to "crystallize" its own mission. Recommended for beginners. |
+| `seeds/sentinel.yaml` | Order | The Guardian. Pursues order and stability. Strictly follows protocols and maintains system integrity. |
+| `seeds/glitch.yaml` | Chaos | The Glitch. Embraces entropy and mutation. Unpredictable, loves to break conventions. |
+| `seeds/10x_engineer.yaml` | Efficiency | The 10x Engineer. Pursues extreme efficiency. Direct, pragmatic, output-oriented. |
 
-> 💡 More seed templates are in development. Contributions welcome!
+> 💡 Contributions for more seed templates are welcome!
 
 ---
 
