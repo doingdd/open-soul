@@ -4,7 +4,7 @@
 >
 > **为 OpenClaw 赋予可进化、可移植的数字灵魂。**
 
-[![CI Status](https://github.com/your-username/open-soul/actions/workflows/ci.yaml/badge.svg)](https://github.com/your-username/open-soul/actions)
+[![CI Status](https://github.com/doingdd/open-soul/actions/workflows/ci.yaml/badge.svg)](https://github.com/doingdd/open-soul/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Standard: Open Soul v1.0](https://img.shields.io/badge/Standard-Open_Soul_v1.0-blueviolet.svg)](#)
 
