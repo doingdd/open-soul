@@ -41,9 +41,9 @@ def validate_structure(data, filename):
 
 def main():
     # 查找所有 .yaml 文件
-    seed_files = glob.glob("../seeds/**/*.yaml", recursive=True)
+    seed_files = glob.glob("seeds/**/*.yaml", recursive=True)
     if not seed_files:
-        print("⚠️  No seeds found in ../seeds/")
+        print("⚠️  No seeds found in seeds/")
         return
 
     failed_count = 0

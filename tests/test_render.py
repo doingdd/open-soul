@@ -19,7 +19,7 @@ def mock_fs_read(path):
 def test_rendering():
     # 1. 读取 System Prompt 模板
     try:
-        with open("../runtime/render.md", "r", encoding='utf-8') as f:
+        with open("runtime/render.md", "r", encoding='utf-8') as f:
             template_content = f.read()
     except FileNotFoundError:
         print("❌ Critical: runtime/render.md not found!")
@@ -34,7 +34,7 @@ def test_rendering():
     env = Environment(undefined=SilentUndefined)
     
     # 4. 遍历所有种子进行渲染测试
-    seeds = glob.glob("../seeds/**/*.yaml", recursive=True)
+    seeds = glob.glob("seeds/**/*.yaml", recursive=True)
     failed_count = 0
 
     print(f"🎨 Testing render simulation for {len(seeds)} seeds...")
