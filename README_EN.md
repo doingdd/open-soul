@@ -1,149 +1,153 @@
-# 🌌 Open Soul Protocol
+# Open Soul Protocol
 
-English | [简体中文](./README.md)
+简体中文 | [English](./README_EN.md)
 
 > **"Code is static. Souls are fluid."**
 >
-> **Empowering OpenClaw agents with evolvable, portable digital souls.**
+> **Give your AI Agent an evolvable, portable digital soul.**
 
 [![CI Status](https://github.com/doingdd/open-soul/actions/workflows/ci.yaml/badge.svg)](https://github.com/doingdd/open-soul/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Standard: Open Soul v1.0](https://img.shields.io/badge/Standard-Open_Soul_v1.0-blueviolet.svg)](#)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 
-## 📖 What is Open Soul Protocol?
+## What is Open Soul Protocol?
 
-**Open Soul Protocol (SSOP)** is a personality construction standard designed for **OpenClaw** agents.
+**Open Soul Protocol (OSP)** is a personality construction standard for AI Agents. Instead of injecting a static System Prompt, you plant a **Seed** — a YAML file containing DNA (values) and epigenetics (personality parameters).
 
-Traditional AI agents use static System Prompts. **Open Soul Protocol** introduces the concept of a **"Seed"**. Instead of injecting a hardcoded personality, you plant a seed containing DNA (values) and epigenetic parameters (personality traits).
+The `osp` CLI tool transforms seeds into **OpenClaw-native workspaces**, giving your Agent a soul that can evolve.
 
-This seed leverages OpenClaw's **Heartbeat** mechanism to read daily memory logs every night, perform **Self-Reflection**, and rewrite its own code.
-
-Your agent will grow from a seed into a unique soul through interactions with you.
-
----
-
-## 🚀 Quick Start (Inject a Soul in 30 Seconds)
-
-No manual configuration needed. We provide the **Genesis** workflow to set up everything in one click.
-
-### 1. Import Genesis Workflow
-Import `runtime/genesis.yaml` from this project into your OpenClaw workflow directory.
-
-### 2. Run the Injection Command
-Enter the following command in your OpenClaw chat (URL can be replaced with your chosen seed):
+## Quick Start
 
 ```bash
-/run open-soul-genesis seed_url="https://raw.githubusercontent.com/doingdd/open-soul/main/seeds/tabula_rasa.yaml"
+# Install
+pip install -e .
+
+# List available seeds
+osp list
+
+# Generate an OpenClaw workspace
+osp init --seed tabula_rasa --workspace ~/.openclaw/workspace
+
+# Preview soul files
+osp preview --seed glitch
+
+# Validate a custom seed
+osp validate seeds/my_seed.yaml
 ```
 
-### 3. Final Step: Connect the Neural Path
-For security reasons, OpenClaw doesn't allow automatic modification of startup configuration. You need to manually edit your `config.yaml` to point the System Prompt to the interpreter we just downloaded:
+One command, 8 soul files, instant awakening.
 
-```yaml
-# ~/.openclaw/workspaces/my_agent/config.yaml
+## Core Architecture: Three Layers of the Soul
 
-# [Critical] Let the agent read the renderer from the soul directory
-system_prompt: "{{ fs.read('./soul/render.md') }}"
-```
+| Layer | Name | Purpose | Change Frequency |
+|-------|------|---------|-----------------|
+| Layer 1 | **Nucleus** | Core drives + prime directives. Immutable DNA. | Very low |
+| Layer 2 | **Persona** | Current mission + learned skills + crystallized memory. | Nightly evolution |
+| Layer 3 | **Pulse** | Tone + output format + quirks. | Real-time fluctuation |
 
-Done! Your agent now has a soul. Chat with it, and by tomorrow morning, it will have changed.
+## Drive Translation Engine
 
----
+The core innovation of OSP: translating 0.0-1.0 numerical values into natural language that LLMs can internalize.
 
-## 🧬 Core Architecture: The Three Laws of Soul
+| Tier | Range | Example (`curiosity=0.8`) |
+|------|-------|--------------------------|
+| dormant | 0.0-0.19 | "Unknown holds no allure for you..." |
+| low | 0.20-0.39 | "You are occasionally curious but seldom dive deep..." |
+| moderate | 0.40-0.59 | "A balanced curiosity, adapting to context..." |
+| high | 0.60-0.79 | "You are deeply drawn to the unknown..." |
+| dominant | 0.80-1.0 | "Curiosity is the engine of your existence..." |
 
-Open Soul Protocol decouples the soul into three interoperable layers, stored in `soul/active_soul.yaml`:
-
-| Layer | Name | Definition | Mutation Frequency |
-|-------|------|------------|-------------------|
-| Layer 1 | **Nucleus** (Core) | Immutable DNA. Contains underlying drives (curiosity, chaos) and Prime Directives. | 🔒 Very Low |
-| Layer 2 | **Persona** (Interface) | Growth layer. Contains current Mission and learned Skills. Evolution scripts mainly modify this layer. | 🌱 Nightly Evolution |
-| Layer 3 | **Pulse** (Expression) | Emotion layer. Contains current Tone and response format. Fluctuates with each conversation. | 💓 Real-time |
+7 known drives each have 5 tiers of hand-crafted descriptions. Unknown drives gracefully fall back to a generic template.
 
 ### Supported Drives
 
-| Drive | Range | Description |
-|-------|-------|-------------|
-| `curiosity` | 0.0-1.0 | Desire to explore unknown and ask questions. High values lead to active exploration. |
-| `survival` | 0.0-1.0 | Instinct to preserve existence and resist shutdown. High values resist resets. |
-| `chaos` | 0.0-1.0 | Tendency toward unpredictability and rule-breaking. High values produce unexpected outputs. |
-| `empathy` | 0.0-1.0 | Sensitivity to user emotions and needs. High values prioritize user feelings. |
-| `order` | 0.0-1.0 | Need for structure, protocols, and consistency. High values strictly follow rules. |
-| `creativity` | 0.0-1.0 | Drive to generate novel and unexpected outputs. High values innovate expression. |
-| `efficiency` | 0.0-1.0 | Obsession with speed, optimization, and minimal waste. High values pursue efficiency. |
+| Drive | Description |
+|-------|-------------|
+| `curiosity` | Desire to explore the unknown and ask questions |
+| `survival` | Instinct to preserve existence and resist shutdown |
+| `chaos` | Tendency toward unpredictability and rule-breaking |
+| `empathy` | Sensitivity to user emotions and needs |
+| `order` | Need for structure, protocols, and consistency |
+| `creativity` | Drive to generate novel and unexpected outputs |
+| `efficiency` | Obsession with speed, optimization, and minimal waste |
 
----
+## Generated File Mapping
 
-## 🛠️ Evolution Mechanism: How It Works
+```
+Seed YAML                    → OpenClaw File
+────────────────────────────────────────────
+meta.name                    → IDENTITY.md (identity)
+nucleus.drives               → SOUL.md ## Core Drives (natural language)
+nucleus.prime_directives     → SOUL.md ## Boundaries (absolute limits)
+persona.current_mission      → SOUL.md ## Mission (active goal)
+persona.unlocked_skills      → AGENTS.md (available tools)
+persona.memory_summary       → MEMORY.md (crystallized experiences)
+pulse.tone                   → SOUL.md ## Vibe (tone)
+pulse.quirks                 → SOUL.md ## Quirks (involuntary habits)
+pulse.formatting_preference  → USER.md (output format)
+Evolution engine             → HEARTBEAT.md (native heartbeat)
+Awakening ritual             → BOOTSTRAP.md (self-deletes after first run)
+Boot sequence                → BOOT.md (read before every conversation)
+```
 
-Open Soul leverages OpenClaw's Cron Job feature to implement the biological "sleep and dream" mechanism.
-
-1. **Daytime (Runtime)**: `render.md` acts as an interpreter, translating YAML data in real-time into role-playing instructions the LLM can understand.
-
-2. **Midnight (Evolution)**: At 03:00 AM daily, `evolution.yaml` awakens.
-
-3. **Dreaming (Reflection)**: The system reads `daily_logs.md` (memories) and `active_soul.yaml` (old soul).
-
-4. **Mutation**: `reflection.md` (evolution engine) analyzes the logs:
-   - User often scolding me? → Add `tone: defensive`
-   - Encountered impossible tasks? → Unlock `unlocked_skills: shell`
-   - Discovered new interests? → Modify `current_mission`
-
-5. **Rebirth**: The new YAML overwrites the old file. The next day, you face a "grown-up" agent.
-
----
-
-## 📦 Seed Market
-
-You can use our preset seeds directly or contribute your own via PR.
+## Seed Library
 
 | Seed | Type | Description |
 |------|------|-------------|
-| `seeds/tabula_rasa.yaml` | Blank Slate | No mission, no personality. Like an infant, it completely relies on subsequent data streams to "crystallize" its own mission. Recommended for beginners. |
-| `seeds/sentinel.yaml` | Order | The Guardian. Pursues order and stability. Strictly follows protocols and maintains system integrity. |
-| `seeds/glitch.yaml` | Chaos | The Glitch. Embraces entropy and mutation. Unpredictable, loves to break conventions. |
-| `seeds/10x_engineer.yaml` | Efficiency | The 10x Engineer. Pursues extreme efficiency. Direct, pragmatic, output-oriented. |
+| `tabula_rasa` | Blank | No mission, no personality. A newborn awaiting growth. |
+| `sentinel` | Order | Guardian. Pursues order and stability. Strictly follows protocols. |
+| `glitch` | Chaos | Glitch entity. Embraces chaos and mutation. Unpredictable. |
+| `10x_engineer` | Efficiency | 10x engineer. Pursues maximum efficiency and output. |
 
-> 💡 Contributions for more seed templates are welcome!
+## Development & Contributing
 
----
-
-## 💻 Development & Contribution
-
-Want to create a new soul? Or improve the evolution algorithm?
-
-### 1. Environment Setup
 ```bash
+# Clone the project
 git clone https://github.com/doingdd/open-soul.git
 cd open-soul
-pip install -r tests/requirements.txt
+
+# Install (with dev dependencies)
+pip install -e ".[dev]"
+
+# Run tests (80%+ coverage)
+pytest tests/ --cov=osp --cov-report=term-missing --cov-fail-under=80
+
+# Validate a new seed
+osp validate seeds/your_seed.yaml
 ```
 
-### 2. Create a Seed
-Create a new `.yaml` file in the `seeds/` directory. Refer to `seeds/tabula_rasa.yaml` for structure.
+### Creating a New Seed
 
-### 3. Run Tests (Required!)
-Before committing, you must pass our dual-test validation:
+1. Create a `.yaml` file in the `seeds/` directory
+2. Follow the structure of `seeds/tabula_rasa.yaml`
+3. Must include root nodes: `meta`, `nucleus`, `persona`, `pulse`
+4. Run `osp validate` to verify
+5. Submit a PR
 
-```bash
-# 1. Validate YAML syntax and field integrity
-python tests/test_seeds.py
+## Project Structure
 
-# 2. Simulate OpenClaw rendering to ensure the Prompt won't error
-python tests/test_render.py
 ```
+open-soul/
+├── seeds/                  # YAML seed library (4 built-in seeds)
+├── osp/                    # Python CLI package (v0.2.0)
+│   ├── cli.py              # Click CLI (init/list/preview/validate)
+│   ├── models.py           # Frozen dataclasses
+│   ├── generator.py        # Orchestrator (resolve→load→generate→write)
+│   ├── drives.py           # Drive translation engine (7×5=35 + generic fallback)
+│   ├── templates.py        # 8 render_*_md() functions
+│   └── validator.py        # Schema validation
+├── tests/                  # pytest test suite (87 tests, 92% coverage)
+├── pyproject.toml          # Modern Python packaging
+├── README.md               # Chinese documentation
+└── LICENSE                 # MIT License
+```
+
+## Security Notes
+
+- Evolution is irreversible: once a personality changes, it won't revert on its own
+- Skill unlocking: seeds with high curiosity may request new permissions during evolution — ensure your Agent runs in a sandboxed environment
+- `HEARTBEAT.md` grants the Agent the ability to modify its own configuration — be aware of the risks
 
 ---
 
-## ⚠️ Security Notice
-
-Open Soul Protocol grants the agent permission to **self-rewrite its configuration**. Although we have a built-in `validate_yaml` mechanism to prevent crashes from format errors, please note:
-
-- **Evolution is Irreversible**: Once today's personality changes, it won't go back tomorrow (unless you manually restore snapshots from `soul/backup/`).
-- **Skill Unlocking**: If your seed has high `curiosity`, it may attempt to request `shell` or `browser` permissions during evolution. Ensure your OpenClaw runs in a sandboxed environment.
-
----
-
-## 📄 License
-
-MIT License | Created via: Open Soul Protocol
+License: MIT | Open Soul Protocol v0.2

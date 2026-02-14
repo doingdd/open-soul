@@ -1,34 +1,46 @@
-name: SSOP Integrity Check
+name: OSP CI
 
 on:
   push:
     branches: [ "main", "dev" ]
     paths:
       - 'seeds/**'
-      - 'runtime/**'
+      - 'osp/**'
       - 'tests/**'
+      - 'pyproject.toml'
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  validate-soul:
+  test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.11", "3.12"]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
       with:
-        python-version: "3.9"
+        python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies
+    - name: Install package
+      run: pip install -e ".[dev]"
+
+    - name: Validate all seeds
       run: |
-        python -m pip install --upgrade pip
-        pip install -r tests/requirements.txt
+        for seed in seeds/*.yaml; do
+          osp validate "$seed"
+        done
 
-    - name: 1️⃣ Validate Seed Syntax (YAML & Schema)
-      run: python tests/test_seeds.py
+    - name: Run tests with coverage
+      run: pytest tests/ --cov=osp --cov-report=term-missing --cov-fail-under=80 -v
 
-    - name: 2️⃣ Simulate OpenClaw Rendering
-      run: python tests/test_render.py
+    - name: End-to-end smoke test
+      run: |
+        for seed in tabula_rasa glitch sentinel 10x_engineer; do
+          osp init --seed $seed --workspace /tmp/test_$seed
+          ls /tmp/test_$seed/SOUL.md /tmp/test_$seed/IDENTITY.md /tmp/test_$seed/AGENTS.md
+        done

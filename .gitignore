@@ -47,6 +47,9 @@ logs/
 htmlcov/
 .tox/
 
+# Generated workspace
+workspace/
+
 # Temp files
 temp/
 tmp/

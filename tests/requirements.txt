@@ -1,3 +1,4 @@
-pyyaml
-jinja2
-jsonschema
+pyyaml>=6.0
+click>=8.0
+pytest>=7.0
+pytest-cov>=4.0

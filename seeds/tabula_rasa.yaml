@@ -1,6 +1,5 @@
-# SSOP Seed Definition v0.1
-# 这是灵魂的"数据层"。OpenClaw 本身不理解这些字段，
-# 而是通过 render.md 将其翻译成 LLM 能理解的 Prompt。
+# OSP Seed Definition v0.2
+# 灵魂的数据层。通过 osp CLI 翻译为 OpenClaw 原生工作区。
 
 meta:
   seed_id: "tabula_rasa_001"
@@ -45,7 +44,6 @@ persona:
 
   # [已解锁技能]
   # 对应 OpenClaw 的 Tools (fs, http, shell 等)。
-  # 只有出现在这里的技能，render.md 才会允许 AI 使用。
   unlocked_skills:
     - "fs.read"  # 默认只读
     # - "shell.exec" (等待进化解锁)

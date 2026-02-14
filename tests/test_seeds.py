@@ -1,87 +1,107 @@
-import yaml
+"""Seed validation tests - verifies all YAML seeds against the OSP schema.
+
+Uses the osp.validator module for validation logic.
+Can also run standalone: python tests/test_seeds.py
+"""
+
 import glob
 import sys
-import os
+from pathlib import Path
 
-# === 定义 SSOP 标准 Schema ===
-# 这是灵魂必须遵守的法律
-SOUL_SCHEMA = {
-    "required_roots": ["meta", "nucleus", "persona", "pulse"],
-    "nucleus": ["drives", "prime_directives"],
-    "persona": ["current_mission", "unlocked_skills", "memory_summary"],
-    "pulse": ["tone", "formatting_preference"]
-}
+import pytest
+import yaml
 
-def validate_structure(data, filename):
-    errors = []
-    
-    # 1. 检查根节点
-    for root in SOUL_SCHEMA["required_roots"]:
-        if root not in data:
-            errors.append(f"Missing root section: '{root}'")
-            
-    # 2. 检查 Nucleus (内核层)
-    if "nucleus" in data:
-        for field in SOUL_SCHEMA["nucleus"]:
-            if field not in data["nucleus"]:
-                errors.append(f"Missing field in nucleus: '{field}'")
-        # 检查 drives 是否为字典且数值在 0-1 之间
-        if "drives" in data["nucleus"] and isinstance(data["nucleus"]["drives"], dict):
-            for drive, value in data["nucleus"]["drives"].items():
-                if not (0 <= float(value) <= 1):
-                    errors.append(f"Drive '{drive}' value {value} is out of range (0.0 - 1.0)")
+from osp.validator import validate_file, validate_structure
+from osp.models import Seed
 
-    # 3. 检查 Persona (交互层)
-    if "persona" in data:
-        for field in SOUL_SCHEMA["persona"]:
-            if field not in data["persona"]:
-                errors.append(f"Missing field in persona: '{field}'")
+SEEDS_DIR = Path(__file__).parent.parent / "seeds"
 
-    return errors
 
-def main():
-    # 查找所有 .yaml 文件
+# === Pytest-compatible tests ===
+
+class TestSeedValidation:
+    """Validate all seed files using the validator module."""
+
+    @pytest.fixture(params=sorted(SEEDS_DIR.glob("*.yaml")), ids=lambda p: p.stem)
+    def seed_path(self, request: pytest.FixtureRequest) -> Path:
+        return request.param
+
+    def test_seed_is_valid(self, seed_path: Path) -> None:
+        result = validate_file(seed_path)
+        assert result.is_valid, f"Errors in {seed_path.name}: {result.errors}"
+
+    def test_seed_parses_to_model(self, seed_path: Path) -> None:
+        with open(seed_path, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+        seed = Seed.from_dict(data)
+        assert seed.meta.name
+        assert isinstance(seed.nucleus.drives, dict)
+        assert isinstance(seed.nucleus.prime_directives, list)
+
+
+class TestValidationEdgeCases:
+    """Test validation with intentionally broken data."""
+
+    def test_empty_data(self) -> None:
+        errors = validate_structure({}, "test")
+        assert len(errors) == 4  # missing all 4 root sections
+
+    def test_missing_nucleus(self) -> None:
+        data = {"meta": {}, "persona": {}, "pulse": {}}
+        errors = validate_structure(data)
+        assert any("nucleus" in e for e in errors)
+
+    def test_drive_out_of_range(self) -> None:
+        data = {
+            "meta": {"seed_id": "x", "name": "x", "version": 1.0},
+            "nucleus": {"drives": {"test": 1.5}, "prime_directives": []},
+            "persona": {"current_mission": None, "unlocked_skills": [], "memory_summary": ""},
+            "pulse": {"tone": [], "formatting_preference": "text"},
+        }
+        errors = validate_structure(data)
+        assert any("out of range" in e for e in errors)
+
+    def test_non_numeric_drive(self) -> None:
+        data = {
+            "meta": {"seed_id": "x", "name": "x", "version": 1.0},
+            "nucleus": {"drives": {"test": "not_a_number"}, "prime_directives": []},
+            "persona": {"current_mission": None, "unlocked_skills": [], "memory_summary": ""},
+            "pulse": {"tone": [], "formatting_preference": "text"},
+        }
+        errors = validate_structure(data)
+        assert any("not a number" in e for e in errors)
+
+
+# === Standalone script mode (backward compatibility) ===
+
+def main() -> None:
     seed_files = glob.glob("seeds/**/*.yaml", recursive=True)
     if not seed_files:
-        print("⚠️  No seeds found in seeds/")
+        print("No seeds found in seeds/")
         return
 
     failed_count = 0
-
-    print(f"🔍 Found {len(seed_files)} seeds. Validating...")
+    print(f"Found {len(seed_files)} seeds. Validating...")
     print("-" * 40)
 
     for f in seed_files:
-        try:
-            with open(f, 'r', encoding='utf-8') as stream:
-                data = yaml.safe_load(stream)
-                
-            if not data:
-                print(f"❌ {f}: File is empty")
-                failed_count += 1
-                continue
-
-            errors = validate_structure(data, f)
-            
-            if errors:
-                print(f"❌ {f}: FAILED")
-                for e in errors:
-                    print(f"   - {e}")
-                failed_count += 1
-            else:
-                print(f"✅ {f}: PASSED")
-
-        except yaml.YAMLError as exc:
-            print(f"❌ {f}: Invalid YAML syntax - {exc}")
+        result = validate_file(f)
+        if result.is_valid:
+            print(f"  {f}: PASSED")
+        else:
+            print(f"  {f}: FAILED")
+            for e in result.errors:
+                print(f"   - {e}")
             failed_count += 1
 
     print("-" * 40)
     if failed_count > 0:
-        print(f"🚨 Validation failed! {failed_count} seeds have errors.")
+        print(f"Validation failed! {failed_count} seeds have errors.")
         sys.exit(1)
     else:
-        print("✨ All seeds look good!")
+        print("All seeds look good!")
         sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
