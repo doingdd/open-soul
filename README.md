@@ -98,6 +98,7 @@ pulse.formatting_preference  → USER.md (输出格式)
 | `sentinel` | 秩序种 | 守护者，追求秩序与稳定。严格遵守协议。 |
 | `glitch` | 混乱种 | 故障体，拥抱混沌与突变。不可预测。 |
 | `10x_engineer` | 效率种 | 十倍工程师，追求极致效率与产出。 |
+| `qa_breaker` | 破壁种 | 软件测试专家，以破坏性思维守护质量。严谨、高效、不达目的不罢休。 |
 
 ## 开发与贡献
 
@@ -128,7 +129,7 @@ osp validate seeds/your_seed.yaml
 
 ```
 open-soul/
-├── seeds/                  # YAML 种子库 (4 个内置种子)
+├── seeds/                  # YAML 种子库 (5 个内置种子)
 ├── osp/                    # Python CLI 包 (v0.2.0)
 │   ├── cli.py              # Click 命令行 (init/list/preview/validate)
 │   ├── models.py           # Frozen dataclasses

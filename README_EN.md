@@ -98,6 +98,7 @@ Boot sequence                → BOOT.md (read before every conversation)
 | `sentinel` | Order | Guardian. Pursues order and stability. Strictly follows protocols. |
 | `glitch` | Chaos | Glitch entity. Embraces chaos and mutation. Unpredictable. |
 | `10x_engineer` | Efficiency | 10x engineer. Pursues maximum efficiency and output. |
+| `qa_breaker` | Breaker | QA expert. Destructive thinking meets methodical precision. Relentless. |
 
 ## Development & Contributing
 
@@ -128,7 +129,7 @@ osp validate seeds/your_seed.yaml
 
 ```
 open-soul/
-├── seeds/                  # YAML seed library (4 built-in seeds)
+├── seeds/                  # YAML seed library (5 built-in seeds)
 ├── osp/                    # Python CLI package (v0.2.0)
 │   ├── cli.py              # Click CLI (init/list/preview/validate)
 │   ├── models.py           # Frozen dataclasses
