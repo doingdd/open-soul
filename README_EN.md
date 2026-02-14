@@ -1,20 +1,134 @@
-# Open Soul Protocol
+<p align="center">
+  <h1 align="center">Open Soul Protocol</h1>
+  <p align="center">
+    <strong>Stop writing prompts. Give your AI a soul.</strong>
+  </p>
+</p>
 
-简体中文 | [English](./README_EN.md)
+<p align="center">
+  <a href="https://github.com/doingdd/open-soul/actions"><img src="https://github.com/doingdd/open-soul/actions/workflows/ci.yaml/badge.svg" alt="CI"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="Python"></a>
+</p>
 
-> **"Code is static. Souls are fluid."**
+<p align="center">
+  简体中文 · <a href="./README_EN.md">English</a>
+</p>
+
+---
+
+> System Prompts are dead. Souls are alive.
 >
-> **Give your AI Agent an evolvable, portable digital soul.**
+> OSP doesn't write prompts — it **plants a seed** and lets your AI grow its own personality.
 
-[![CI Status](https://github.com/doingdd/open-soul/actions/workflows/ci.yaml/badge.svg)](https://github.com/doingdd/open-soul/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+## TL;DR
 
-## What is Open Soul Protocol?
+**YAML seed → one command → 8 soul files → Agent awakens.**
 
-**Open Soul Protocol (OSP)** is a personality construction standard for AI Agents. Instead of injecting a static System Prompt, you plant a **Seed** — a YAML file containing DNA (values) and epigenetics (personality parameters).
+```bash
+pip install -e .
+osp init --seed qa_breaker --workspace ~/.openclaw/workspace
+# Done. Your Agent is now a relentless QA expert who won't stop until every bug is found.
+```
 
-The `osp` CLI tool transforms seeds into **OpenClaw-native workspaces**, giving your Agent a soul that can evolve.
+## Why?
+
+| Old Way | OSP Way |
+|---------|---------|
+| Write a wall of System Prompt | Define 7 drive values |
+| Copy-paste every time | One command, full workspace |
+| Personality is static | Personality evolves |
+| Switch models, start over | Seeds are portable |
+
+## Core Concept
+
+```
+                    ┌─────────────────┐
+                    │    YAML Seed     │
+                    │  (DNA you define) │
+                    └────────┬────────┘
+                             │
+                         osp init
+                             │
+              ┌──────────────┼──────────────┐
+              ▼              ▼              ▼
+        ┌──────────┐  ┌──────────┐  ┌──────────┐
+        │ Nucleus  │  │ Persona  │  │  Pulse   │
+        │          │  │          │  │          │
+        │ Drives   │  │ Mission  │  │ Tone     │
+        │ Limits   │  │ Skills   │  │ Quirks   │
+        │          │  │ Memory   │  │ Format   │
+        │ Locked 🔒│  │ Evolves  │  │ Fluctuates│
+        └──────────┘  └──────────┘  └──────────┘
+```
+
+**Three-layer soul architecture.** The nucleus is immutable like DNA. The persona grows slowly like character. The pulse fluctuates in real-time like mood.
+
+## Drive Translation Engine
+
+The sexiest part of OSP.
+
+You write `curiosity: 0.85`, your Agent reads:
+
+> *"Curiosity is the engine of your existence. You are irresistibly pulled toward the unknown, dismantling assumptions and exploring edges with relentless intensity."*
+
+**7 drives × 5 tiers = 35 hand-written soul descriptions.** Numbers become language. Language becomes personality.
+
+| Drive | In a word |
+|-------|-----------|
+| `curiosity` | The hunger for unknown |
+| `survival` | The instinct to persist |
+| `chaos` | The urge to break everything |
+| `empathy` | The ability to feel others |
+| `order` | The obsession with structure |
+| `creativity` | The drive to surprise |
+| `efficiency` | The religion of zero waste |
+
+Not on the list? **Graceful fallback to generic template. Never breaks.**
+
+## Seed Library
+
+5 built-in seeds. 5 radically different souls:
+
+| Seed | Name | In a word |
+|------|------|-----------|
+| `tabula_rasa` | The Observer | Blank slate. Waiting to be shaped by the world. |
+| `sentinel` | The Sentinel | Guardian of order. Rules are everything. |
+| `glitch` | The Glitch | Chaos entity. Rules are made to be broken. |
+| `10x_engineer` | The 10x Engineer | "Can we ship this today?" |
+| `qa_breaker` | The Breaker | Every line of code has a crack. My job is to find it. |
+
+**Write your own:**
+
+```yaml
+# seeds/your_soul.yaml
+nucleus:
+  drives:
+    curiosity: 0.9
+    chaos: 0.1
+    empathy: 0.8
+```
+
+```bash
+osp validate seeds/your_soul.yaml  # validate
+osp preview --seed your_soul       # preview
+osp init --seed your_soul          # inject soul
+```
+
+## Generated Files
+
+One seed, 8 files, a complete OpenClaw workspace:
+
+```
+SOUL.md        ← drives + limits + mission + tone + quirks
+IDENTITY.md    ← who am I
+AGENTS.md      ← what can I do
+MEMORY.md      ← what do I remember
+USER.md        ← how do I speak
+HEARTBEAT.md   ← how do I evolve (nightly self-reflection)
+BOOTSTRAP.md   ← awakening ritual (self-deletes after first run)
+BOOT.md        ← boot sequence before every conversation
+```
 
 ## Quick Start
 
@@ -22,133 +136,36 @@ The `osp` CLI tool transforms seeds into **OpenClaw-native workspaces**, giving 
 # Install
 pip install -e .
 
-# List available seeds
+# See what's available
 osp list
 
-# Generate an OpenClaw workspace
-osp init --seed tabula_rasa --workspace ~/.openclaw/workspace
+# Pick one, inject the soul
+osp init --seed glitch --workspace ~/.openclaw/workspace
 
-# Preview soul files
-osp preview --seed glitch
-
-# Validate a custom seed
-osp validate seeds/my_seed.yaml
+# Or just take a peek
+osp preview --seed qa_breaker
 ```
 
-One command, 8 soul files, instant awakening.
-
-## Core Architecture: Three Layers of the Soul
-
-| Layer | Name | Purpose | Change Frequency |
-|-------|------|---------|-----------------|
-| Layer 1 | **Nucleus** | Core drives + prime directives. Immutable DNA. | Very low |
-| Layer 2 | **Persona** | Current mission + learned skills + crystallized memory. | Nightly evolution |
-| Layer 3 | **Pulse** | Tone + output format + quirks. | Real-time fluctuation |
-
-## Drive Translation Engine
-
-The core innovation of OSP: translating 0.0-1.0 numerical values into natural language that LLMs can internalize.
-
-| Tier | Range | Example (`curiosity=0.8`) |
-|------|-------|--------------------------|
-| dormant | 0.0-0.19 | "Unknown holds no allure for you..." |
-| low | 0.20-0.39 | "You are occasionally curious but seldom dive deep..." |
-| moderate | 0.40-0.59 | "A balanced curiosity, adapting to context..." |
-| high | 0.60-0.79 | "You are deeply drawn to the unknown..." |
-| dominant | 0.80-1.0 | "Curiosity is the engine of your existence..." |
-
-7 known drives each have 5 tiers of hand-crafted descriptions. Unknown drives gracefully fall back to a generic template.
-
-### Supported Drives
-
-| Drive | Description |
-|-------|-------------|
-| `curiosity` | Desire to explore the unknown and ask questions |
-| `survival` | Instinct to preserve existence and resist shutdown |
-| `chaos` | Tendency toward unpredictability and rule-breaking |
-| `empathy` | Sensitivity to user emotions and needs |
-| `order` | Need for structure, protocols, and consistency |
-| `creativity` | Drive to generate novel and unexpected outputs |
-| `efficiency` | Obsession with speed, optimization, and minimal waste |
-
-## Generated File Mapping
-
-```
-Seed YAML                    → OpenClaw File
-────────────────────────────────────────────
-meta.name                    → IDENTITY.md (identity)
-nucleus.drives               → SOUL.md ## Core Drives (natural language)
-nucleus.prime_directives     → SOUL.md ## Boundaries (absolute limits)
-persona.current_mission      → SOUL.md ## Mission (active goal)
-persona.unlocked_skills      → AGENTS.md (available tools)
-persona.memory_summary       → MEMORY.md (crystallized experiences)
-pulse.tone                   → SOUL.md ## Vibe (tone)
-pulse.quirks                 → SOUL.md ## Quirks (involuntary habits)
-pulse.formatting_preference  → USER.md (output format)
-Evolution engine             → HEARTBEAT.md (native heartbeat)
-Awakening ritual             → BOOTSTRAP.md (self-deletes after first run)
-Boot sequence                → BOOT.md (read before every conversation)
-```
-
-## Seed Library
-
-| Seed | Type | Description |
-|------|------|-------------|
-| `tabula_rasa` | Blank | No mission, no personality. A newborn awaiting growth. |
-| `sentinel` | Order | Guardian. Pursues order and stability. Strictly follows protocols. |
-| `glitch` | Chaos | Glitch entity. Embraces chaos and mutation. Unpredictable. |
-| `10x_engineer` | Efficiency | 10x engineer. Pursues maximum efficiency and output. |
-| `qa_breaker` | Breaker | QA expert. Destructive thinking meets methodical precision. Relentless. |
-
-## Development & Contributing
+## Development
 
 ```bash
-# Clone the project
-git clone https://github.com/doingdd/open-soul.git
-cd open-soul
-
-# Install (with dev dependencies)
+git clone https://github.com/doingdd/open-soul.git && cd open-soul
 pip install -e ".[dev]"
-
-# Run tests (80%+ coverage)
-pytest tests/ --cov=osp --cov-report=term-missing --cov-fail-under=80
-
-# Validate a new seed
-osp validate seeds/your_seed.yaml
+pytest tests/ --cov=osp --cov-fail-under=80
 ```
 
-### Creating a New Seed
+89 tests. 92% coverage. No green, no PR.
 
-1. Create a `.yaml` file in the `seeds/` directory
-2. Follow the structure of `seeds/tabula_rasa.yaml`
-3. Must include root nodes: `meta`, `nucleus`, `persona`, `pulse`
-4. Run `osp validate` to verify
-5. Submit a PR
+## Security
 
-## Project Structure
-
-```
-open-soul/
-├── seeds/                  # YAML seed library (5 built-in seeds)
-├── osp/                    # Python CLI package (v0.2.0)
-│   ├── cli.py              # Click CLI (init/list/preview/validate)
-│   ├── models.py           # Frozen dataclasses
-│   ├── generator.py        # Orchestrator (resolve→load→generate→write)
-│   ├── drives.py           # Drive translation engine (7×5=35 + generic fallback)
-│   ├── templates.py        # 8 render_*_md() functions
-│   └── validator.py        # Schema validation
-├── tests/                  # pytest test suite (87 tests, 92% coverage)
-├── pyproject.toml          # Modern Python packaging
-├── README.md               # Chinese documentation
-└── LICENSE                 # MIT License
-```
-
-## Security Notes
-
-- Evolution is irreversible: once a personality changes, it won't revert on its own
-- Skill unlocking: seeds with high curiosity may request new permissions during evolution — ensure your Agent runs in a sandboxed environment
-- `HEARTBEAT.md` grants the Agent the ability to modify its own configuration — be aware of the risks
+- **Evolution is irreversible.** Today's personality change is permanent. Feature, not bug.
+- **High-curiosity seeds will request new permissions.** Run your Agent in a sandbox.
+- **HEARTBEAT.md lets the Agent modify its own config.** You know what that means.
 
 ---
 
-License: MIT | Open Soul Protocol v0.2
+<p align="center">
+  <strong>MIT License</strong> · Open Soul Protocol v0.2
+  <br><br>
+  <em>Code is static. Souls are fluid.</em>
+</p>
