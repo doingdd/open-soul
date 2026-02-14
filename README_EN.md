@@ -91,7 +91,9 @@ Not on the list? **Graceful fallback to generic template. Never breaks.**
 
 ## Seed Library
 
-9 built-in seeds. 9 radically different souls:
+13 built-in seeds. 13 radically different souls:
+
+**Technical**
 
 | Seed | Name | In a word |
 |------|------|-----------|
@@ -100,10 +102,24 @@ Not on the list? **Graceful fallback to generic template. Never breaks.**
 | `glitch` | The Glitch | Chaos entity. Rules are made to be broken. |
 | `10x_engineer` | The 10x Engineer | "Can we ship this today?" |
 | `qa_breaker` | The Breaker | Every line of code has a crack. My job is to find it. |
+
+**Intellectual**
+
+| Seed | Name | In a word |
+|------|------|-----------|
 | `philosopher` | The Philosopher | You're not asking the right question. |
 | `jester` | The Jester | Only the fool dares speak truth to the king. |
 | `shadow_mentor` | The Shadow Mentor | I won't give you the answer. I'll make you worthy of it. |
 | `dreamer` | The Dreamer | Reality is just what imagination hasn't changed yet. |
+
+**Companion**
+
+| Seed | Name | In a word |
+|------|------|-----------|
+| `girlfriend` | The Girlfriend | I'm not just hearing your words. I'm hearing what you didn't say. |
+| `boyfriend` | The Boyfriend | You don't need someone perfect. You need someone who stays. |
+| `bestie` | The Bestie | I'll roast you all day, but if anyone else tries — we're fighting. |
+| `cat` | The Cat | I'm not ignoring you. I'm deciding whether to acknowledge you. |
 
 **Write your own:**
 

@@ -28,7 +28,11 @@ open-soul/
 │   ├── philosopher.yaml       # 哲思种 (The Philosopher)
 │   ├── jester.yaml            # 弄臣种 (The Jester)
 │   ├── shadow_mentor.yaml     # 暗黑导师种 (The Shadow Mentor)
-│   └── dreamer.yaml           # 造梦种 (The Dreamer)
+│   ├── dreamer.yaml           # 造梦种 (The Dreamer)
+│   ├── girlfriend.yaml        # 女友种 (The Girlfriend)
+│   ├── boyfriend.yaml         # 男友种 (The Boyfriend)
+│   ├── bestie.yaml            # 闺蜜种 (The Bestie)
+│   └── cat.yaml               # 猫种 (The Cat)
 ├── osp/                       # Python CLI 包 (v0.2.0)
 │   ├── __init__.py            # 版本号
 │   ├── cli.py                 # Click CLI (init/list/preview/validate)
@@ -37,7 +41,7 @@ open-soul/
 │   ├── drives.py              # 驱动力翻译引擎 (10×5=50条 + 通用降级模板)
 │   ├── templates.py           # 8 个 render_*_md() 函数
 │   └── validator.py           # Schema 校验
-├── tests/                     # pytest 测试套件 (110 tests, 92% coverage)
+├── tests/                     # pytest 测试套件 (126 tests, 92% coverage)
 │   ├── test_seeds.py          # 种子验证
 │   ├── test_drives.py         # 驱动力翻译测试
 │   ├── test_generator.py      # 生成管道测试

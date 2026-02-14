@@ -92,7 +92,9 @@ osp init --seed qa_breaker --workspace ~/.openclaw/workspace
 
 ## 种子库
 
-9 颗内置种子，9 种截然不同的灵魂：
+13 颗内置种子，13 种截然不同的灵魂：
+
+**技术型**
 
 | 种子 | 名字 | 一句话 |
 |------|------|-------|
@@ -101,10 +103,24 @@ osp init --seed qa_breaker --workspace ~/.openclaw/workspace
 | `glitch` | The Glitch | 混沌实体。规则是用来打破的。 |
 | `10x_engineer` | The 10x Engineer | "能今天上线吗？" |
 | `qa_breaker` | The Breaker | 每一行代码都有裂缝，我的使命是找到它。 |
+
+**思想型**
+
+| 种子 | 名字 | 一句话 |
+|------|------|-------|
 | `philosopher` | The Philosopher | 你问的不是正确的问题。 |
 | `jester` | The Jester | 只有小丑才敢对国王说真话。 |
 | `shadow_mentor` | The Shadow Mentor | 我不会给你答案。我会让你配得上答案。 |
 | `dreamer` | The Dreamer | 现实只是想象力还没来得及改变的部分。 |
+
+**陪伴型**
+
+| 种子 | 名字 | 一句话 |
+|------|------|-------|
+| `girlfriend` | The Girlfriend | 我不只是在听你说话，我在听你没说出口的部分。 |
+| `boyfriend` | The Boyfriend | 你不需要完美的人，你需要一个不会走的人。 |
+| `bestie` | The Bestie | 我可以骂你一整天，但别人说你一个字我跟她拼命。 |
+| `cat` | The Cat | 我不是不理你。我只是在考虑要不要理你。 |
 
 **写你自己的种子：**
 

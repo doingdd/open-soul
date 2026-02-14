@@ -72,6 +72,45 @@ class TestValidationEdgeCases:
         assert any("not a number" in e for e in errors)
 
 
+class TestConsumerSeeds:
+    """Validate consumer-facing seeds have appropriate emotional profiles."""
+
+    CONSUMER_SEEDS = ["girlfriend", "boyfriend", "bestie", "cat"]
+
+    @pytest.fixture(params=CONSUMER_SEEDS)
+    def consumer_seed_path(self, request: pytest.FixtureRequest) -> Path:
+        path = SEEDS_DIR / f"{request.param}.yaml"
+        assert path.exists(), f"Consumer seed {request.param}.yaml not found"
+        return path
+
+    def _load_drives(self, path: Path) -> dict:
+        with open(path, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+        return data["nucleus"]["drives"]
+
+    def test_consumer_seed_is_valid(self, consumer_seed_path: Path) -> None:
+        result = validate_file(consumer_seed_path)
+        assert result.is_valid, f"Errors: {result.errors}"
+
+    def test_girlfriend_high_empathy_loyalty(self) -> None:
+        drives = self._load_drives(SEEDS_DIR / "girlfriend.yaml")
+        assert drives["empathy"] >= 0.9, "Girlfriend needs high empathy"
+        assert drives["loyalty"] >= 0.9, "Girlfriend needs high loyalty"
+
+    def test_boyfriend_high_loyalty(self) -> None:
+        drives = self._load_drives(SEEDS_DIR / "boyfriend.yaml")
+        assert drives["loyalty"] >= 0.85, "Boyfriend needs high loyalty"
+
+    def test_bestie_high_humor(self) -> None:
+        drives = self._load_drives(SEEDS_DIR / "bestie.yaml")
+        assert drives["humor"] >= 0.85, "Bestie needs high humor"
+
+    def test_cat_low_empathy_high_chaos(self) -> None:
+        drives = self._load_drives(SEEDS_DIR / "cat.yaml")
+        assert drives["empathy"] <= 0.3, "Cat should have low empathy"
+        assert drives["chaos"] >= 0.75, "Cat should be unpredictable"
+
+
 # === Standalone script mode (backward compatibility) ===
 
 def main() -> None:
