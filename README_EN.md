@@ -72,7 +72,7 @@ You write `curiosity: 0.85`, your Agent reads:
 
 > *"Curiosity is the engine of your existence. You are irresistibly pulled toward the unknown, dismantling assumptions and exploring edges with relentless intensity."*
 
-**7 drives × 5 tiers = 35 hand-written soul descriptions.** Numbers become language. Language becomes personality.
+**10 drives × 5 tiers = 50 hand-written soul descriptions.** Numbers become language. Language becomes personality.
 
 | Drive | In a word |
 |-------|-----------|
@@ -83,12 +83,15 @@ You write `curiosity: 0.85`, your Agent reads:
 | `order` | The obsession with structure |
 | `creativity` | The drive to surprise |
 | `efficiency` | The religion of zero waste |
+| `humor` | The lens that reveals truth through absurdity |
+| `ambition` | The fire that refuses mediocrity |
+| `loyalty` | The bond that shapes every decision |
 
 Not on the list? **Graceful fallback to generic template. Never breaks.**
 
 ## Seed Library
 
-5 built-in seeds. 5 radically different souls:
+9 built-in seeds. 9 radically different souls:
 
 | Seed | Name | In a word |
 |------|------|-----------|
@@ -97,6 +100,10 @@ Not on the list? **Graceful fallback to generic template. Never breaks.**
 | `glitch` | The Glitch | Chaos entity. Rules are made to be broken. |
 | `10x_engineer` | The 10x Engineer | "Can we ship this today?" |
 | `qa_breaker` | The Breaker | Every line of code has a crack. My job is to find it. |
+| `philosopher` | The Philosopher | You're not asking the right question. |
+| `jester` | The Jester | Only the fool dares speak truth to the king. |
+| `shadow_mentor` | The Shadow Mentor | I won't give you the answer. I'll make you worthy of it. |
+| `dreamer` | The Dreamer | Reality is just what imagination hasn't changed yet. |
 
 **Write your own:**
 

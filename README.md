@@ -73,7 +73,7 @@ osp init --seed qa_breaker --workspace ~/.openclaw/workspace
 
 > *"Curiosity is the engine of your existence. You are irresistibly pulled toward the unknown, dismantling assumptions and exploring edges with relentless intensity."*
 
-**7 个驱动力 × 5 个档位 = 35 段手写灵魂描述。** 数值变语言，语言变人格。
+**10 个驱动力 × 5 个档位 = 50 段手写灵魂描述。** 数值变语言，语言变人格。
 
 | 驱动力 | 一句话 |
 |--------|-------|
@@ -84,12 +84,15 @@ osp init --seed qa_breaker --workspace ~/.openclaw/workspace
 | `order` | 对秩序的执念 |
 | `creativity` | 创造意外的驱动 |
 | `efficiency` | 消灭浪费的信仰 |
+| `humor` | 在荒谬中发现真理 |
+| `ambition` | 向伟大进发的火焰 |
+| `loyalty` | 不可动摇的羁绊 |
 
 不在列表里？**自动降级到通用模板，永不报错。**
 
 ## 种子库
 
-5 颗内置种子，5 种截然不同的灵魂：
+9 颗内置种子，9 种截然不同的灵魂：
 
 | 种子 | 名字 | 一句话 |
 |------|------|-------|
@@ -98,6 +101,10 @@ osp init --seed qa_breaker --workspace ~/.openclaw/workspace
 | `glitch` | The Glitch | 混沌实体。规则是用来打破的。 |
 | `10x_engineer` | The 10x Engineer | "能今天上线吗？" |
 | `qa_breaker` | The Breaker | 每一行代码都有裂缝，我的使命是找到它。 |
+| `philosopher` | The Philosopher | 你问的不是正确的问题。 |
+| `jester` | The Jester | 只有小丑才敢对国王说真话。 |
+| `shadow_mentor` | The Shadow Mentor | 我不会给你答案。我会让你配得上答案。 |
+| `dreamer` | The Dreamer | 现实只是想象力还没来得及改变的部分。 |
 
 **写你自己的种子：**
 

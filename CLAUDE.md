@@ -24,16 +24,20 @@ open-soul/
 │   ├── glitch.yaml            # 混乱种 (The Glitch)
 │   ├── sentinel.yaml          # 秩序种 (The Sentinel)
 │   ├── 10x_engineer.yaml      # 效率种 (The 10x Engineer)
-│   └── qa_breaker.yaml        # 破壁种 (The Breaker)
+│   ├── qa_breaker.yaml        # 破壁种 (The Breaker)
+│   ├── philosopher.yaml       # 哲思种 (The Philosopher)
+│   ├── jester.yaml            # 弄臣种 (The Jester)
+│   ├── shadow_mentor.yaml     # 暗黑导师种 (The Shadow Mentor)
+│   └── dreamer.yaml           # 造梦种 (The Dreamer)
 ├── osp/                       # Python CLI 包 (v0.2.0)
 │   ├── __init__.py            # 版本号
 │   ├── cli.py                 # Click CLI (init/list/preview/validate)
 │   ├── models.py              # Frozen dataclasses (Seed/Meta/Nucleus/Persona/Pulse)
 │   ├── generator.py           # 编排器 (resolve→load→generate→write)
-│   ├── drives.py              # 驱动力翻译引擎 (7×5=35条 + 通用降级模板)
+│   ├── drives.py              # 驱动力翻译引擎 (10×5=50条 + 通用降级模板)
 │   ├── templates.py           # 8 个 render_*_md() 函数
 │   └── validator.py           # Schema 校验
-├── tests/                     # pytest 测试套件 (89 tests, 92% coverage)
+├── tests/                     # pytest 测试套件 (110 tests, 92% coverage)
 │   ├── test_seeds.py          # 种子验证
 │   ├── test_drives.py         # 驱动力翻译测试
 │   ├── test_generator.py      # 生成管道测试

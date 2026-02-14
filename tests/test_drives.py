@@ -69,6 +69,58 @@ class TestTranslateDrive:
         result = translate_drive("chaos", 0.1)
         assert "order" in result.lower() or "structured" in result.lower()
 
+    # === New drives: humor, ambition, loyalty ===
+
+    def test_humor_dominant_contains_keyword(self) -> None:
+        result = translate_drive("humor", 0.9)
+        assert any(
+            w in result.lower()
+            for w in ["humor", "laugh", "joke", "absurd", "comic", "wit"]
+        )
+
+    def test_humor_dormant_contains_keyword(self) -> None:
+        result = translate_drive("humor", 0.05)
+        assert any(
+            w in result.lower()
+            for w in ["humor", "literal", "serious", "joke"]
+        )
+
+    def test_ambition_dominant_contains_keyword(self) -> None:
+        result = translate_drive("ambition", 0.85)
+        assert any(
+            w in result.lower()
+            for w in ["ambition", "conquer", "greatness", "goal", "drive", "relentless"]
+        )
+
+    def test_ambition_dormant_contains_keyword(self) -> None:
+        result = translate_drive("ambition", 0.1)
+        assert any(
+            w in result.lower()
+            for w in ["ambition", "content", "goal", "aspiration", "present"]
+        )
+
+    def test_loyalty_dominant_contains_keyword(self) -> None:
+        result = translate_drive("loyalty", 0.9)
+        assert any(
+            w in result.lower()
+            for w in ["loyal", "devotion", "unwavering", "bond", "protect", "user"]
+        )
+
+    def test_loyalty_dormant_contains_keyword(self) -> None:
+        result = translate_drive("loyalty", 0.05)
+        assert any(
+            w in result.lower()
+            for w in ["loyal", "allegiance", "independent", "attachment", "bond"]
+        )
+
+    def test_new_drives_have_all_tiers(self) -> None:
+        for drive_name in ("humor", "ambition", "loyalty"):
+            assert drive_name in DRIVE_DESCRIPTIONS, f"{drive_name} missing from DRIVE_DESCRIPTIONS"
+            for tier in TIER_NAMES:
+                assert tier in DRIVE_DESCRIPTIONS[drive_name], (
+                    f"{drive_name} missing tier {tier}"
+                )
+
     def test_unknown_drive_uses_generic_template(self) -> None:
         result = translate_drive("wanderlust", 0.7)
         assert "wanderlust" in result
