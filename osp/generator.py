@@ -108,12 +108,17 @@ def write_workspace(workspace: dict[str, str], output_dir: Path) -> list[Path]:
     """Write generated workspace files to disk.
 
     Creates the output directory if it doesn't exist.
+    Skips files with empty content (e.g., BIOGRAPHY.md for seeds without stories).
     Returns list of written file paths.
     """
     output_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
 
     for filename, content in workspace.items():
+        # Skip files with empty content (optional story files)
+        if not content or not content.strip():
+            continue
+
         file_path = output_dir / filename
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(content)

@@ -47,6 +47,24 @@ class Pulse:
 
 
 @dataclass(frozen=True)
+class Story:
+    """Optional pre-written story content for instant-ready characters.
+
+    When provided, these fields are used directly instead of requiring
+    LLM-based evolution. This follows Clawra's approach: hand-written
+    stories have more soul than generated ones.
+    """
+
+    age: Optional[int] = None
+    location: Optional[str] = None
+    occupation: Optional[str] = None
+    biography: Optional[str] = None
+    daily_routine: Optional[str] = None
+    memories: Optional[list[dict]] = None
+    speech_examples: Optional[list[str]] = None
+
+
+@dataclass(frozen=True)
 class Seed:
     """Complete soul seed - the DNA of an AI agent."""
 
@@ -54,6 +72,7 @@ class Seed:
     nucleus: Nucleus
     persona: Persona
     pulse: Pulse
+    story: Optional[Story] = None  # Pre-written story (optional)
 
     @classmethod
     def from_dict(cls, data: dict) -> Seed:
@@ -90,4 +109,18 @@ class Seed:
             quirks=list(pulse_data.get("quirks", [])),
         )
 
-        return cls(meta=meta, nucleus=nucleus, persona=persona, pulse=pulse)
+        # Parse optional story
+        story = None
+        if "story" in data and data["story"]:
+            story_data = data["story"]
+            story = Story(
+                age=story_data.get("age"),
+                location=story_data.get("location"),
+                occupation=story_data.get("occupation"),
+                biography=story_data.get("biography"),
+                daily_routine=story_data.get("daily_routine"),
+                memories=list(story_data.get("memories", [])) if story_data.get("memories") else None,
+                speech_examples=list(story_data.get("speech_examples", [])) if story_data.get("speech_examples") else None,
+            )
+
+        return cls(meta=meta, nucleus=nucleus, persona=persona, pulse=pulse, story=story)

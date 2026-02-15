@@ -100,16 +100,87 @@ class TestListAvailableSeeds:
 
 # === Workspace Generation ===
 
+# Core files that are always generated (non-optional)
+CORE_FILES = {
+    "IDENTITY.md",
+    "SOUL.md",
+    "AGENTS.md",
+    "MEMORY.md",
+    "HEARTBEAT.md",
+    "BOOTSTRAP.md",
+    "BOOT.md",
+    "USER.md",
+}
+
+# Optional story file (only generated when seed has story content)
+STORY_FILE = "STORY.md"
+
+
 class TestGenerateWorkspace:
     def test_generates_all_files(self, sample_seed: Seed) -> None:
         workspace = generate_workspace(sample_seed)
         assert set(workspace.keys()) == set(TEMPLATE_REGISTRY.keys())
 
     def test_all_files_are_nonempty_strings(self, sample_seed: Seed) -> None:
+        """Core files should always be non-empty. STORY.md may be empty."""
         workspace = generate_workspace(sample_seed)
         for filename, content in workspace.items():
             assert isinstance(content, str), f"{filename} is not a string"
-            assert len(content) > 0, f"{filename} is empty"
+            # Core files must be non-empty
+            if filename in CORE_FILES:
+                assert len(content) > 0, f"{filename} is empty"
+            # STORY.md can be empty (when seed has no story)
+
+    def test_story_file_empty_without_story(self, sample_seed: Seed) -> None:
+        """Seeds without story should produce empty STORY.md."""
+        workspace = generate_workspace(sample_seed)
+        assert workspace[STORY_FILE] == "", "STORY.md should be empty"
+
+    def test_story_file_with_story(self) -> None:
+        """Seeds with story should produce non-empty STORY.md."""
+        seed = Seed.from_dict(
+            {
+                "meta": {
+                    "seed_id": "story_test",
+                    "name": "Story Test",
+                    "version": 1.0,
+                    "created_at": "2024-01-01",
+                },
+                "nucleus": {
+                    "drives": {"curiosity": 0.5},
+                    "prime_directives": ["Be kind."],
+                },
+                "persona": {
+                    "current_mission": "Test mission",
+                    "mission_lock": False,
+                    "memory_summary": "Test memory",
+                    "unlocked_skills": [],
+                },
+                "pulse": {
+                    "tone": ["friendly"],
+                    "formatting_preference": "text",
+                    "quirks": [],
+                },
+                "story": {
+                    "age": 25,
+                    "location": "Test City",
+                    "occupation": "Tester",
+                    "biography": "This is my story.",
+                    "daily_routine": "I test things.",
+                    "memories": [
+                        {"event": "First test", "detail": "It passed."}
+                    ],
+                    "speech_examples": ["Hello!", "How are you?"],
+                },
+            }
+        )
+        workspace = generate_workspace(seed)
+        assert len(workspace[STORY_FILE]) > 0, "STORY.md should have content"
+        # Verify all sections are present
+        assert "Who I Am" in workspace[STORY_FILE]
+        assert "A Day in My Life" in workspace[STORY_FILE]
+        assert "Memories" in workspace[STORY_FILE]
+        assert "How I Speak" in workspace[STORY_FILE]
 
     def test_soul_md_contains_drives(self, sample_seed: Seed) -> None:
         workspace = generate_workspace(sample_seed)
@@ -159,11 +230,21 @@ class TestGenerateWorkspace:
 
 class TestInitWorkspace:
     def test_writes_all_files(self, tmp_workspace: Path) -> None:
+        """Seeds without story should write only core files (8 files)."""
         written = init_workspace("tabula_rasa", tmp_workspace)
-        assert len(written) == len(TEMPLATE_REGISTRY)
+        # tabula_rasa has no story, so only core files are written
+        assert len(written) == len(CORE_FILES)
         for path in written:
             assert path.exists()
             assert path.stat().st_size > 0
+
+    def test_writes_story_file_for_seeds_with_story(self, tmp_workspace: Path) -> None:
+        """Seeds with story should write 9 files (8 core + 1 story)."""
+        written = init_workspace("girlfriend", tmp_workspace)
+        # girlfriend has a story, so 9 files are written
+        assert len(written) == len(CORE_FILES) + 1
+        written_names = {p.name for p in written}
+        assert STORY_FILE in written_names
 
     def test_creates_output_directory(self, tmp_workspace: Path) -> None:
         assert not tmp_workspace.exists()

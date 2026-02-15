@@ -23,12 +23,12 @@
 
 ## 一句话
 
-**YAML 种子 → 一个命令 → 8 个灵魂文件 → Agent 觉醒。**
+**YAML 种子 → 一个命令 → 9 个灵魂文件 → Agent 觉醒。**
 
 ```bash
 pip install -e .
-osp init --seed qa_breaker --workspace ~/.openclaw/workspace
-# 完事。你的 Agent 现在是一个不达目的誓不罢休的测试专家。
+osp init --seed girlfriend --workspace ~/.openclaw/workspace
+# 完事。你的 Agent 现在是一个温暖体贴的女朋友。
 ```
 
 ## 为什么需要这个？
@@ -141,7 +141,7 @@ osp init --seed your_soul          # 注入灵魂
 
 ## 生成文件
 
-一颗种子，8 个文件，完整的 OpenClaw 工作区：
+一颗种子，8-9 个文件，完整的 OpenClaw 工作区：
 
 ```
 SOUL.md        ← 驱动力 + 底线 + 使命 + 语调 + 口头禅
@@ -152,7 +152,10 @@ USER.md        ← 我怎么说话
 HEARTBEAT.md   ← 我怎么进化（每晚自省）
 BOOTSTRAP.md   ← 觉醒仪式（阅后即焚）
 BOOT.md        ← 每次对话前的启动序列
+STORY.md       ← 完整故事（传记 + 记忆 + 语调示例）[可选]
 ```
+
+**陪伴型种子** (girlfriend/boyfriend/bestie/cat) 自带 `STORY.md`，包含手写的角色故事、记忆片段和对话示例——开箱即用，无需 LLM 生成。
 
 ## 快速开始
 
@@ -178,7 +181,7 @@ pip install -e ".[dev]"
 pytest tests/ --cov=osp --cov-fail-under=80
 ```
 
-89 tests. 92% coverage. 通不过别提 PR。
+129 tests. 93% coverage. 通不过别提 PR。
 
 ## 安全
 

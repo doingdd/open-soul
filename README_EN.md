@@ -23,12 +23,12 @@
 
 ## TL;DR
 
-**YAML seed → one command → 8 soul files → Agent awakens.**
+**YAML seed → one command → 9 soul files → Agent awakens.**
 
 ```bash
 pip install -e .
-osp init --seed qa_breaker --workspace ~/.openclaw/workspace
-# Done. Your Agent is now a relentless QA expert who won't stop until every bug is found.
+osp init --seed girlfriend --workspace ~/.openclaw/workspace
+# Done. Your Agent is now a warm, caring girlfriend.
 ```
 
 ## Why?
@@ -140,7 +140,7 @@ osp init --seed your_soul          # inject soul
 
 ## Generated Files
 
-One seed, 8 files, a complete OpenClaw workspace:
+One seed, 8-9 files, a complete OpenClaw workspace:
 
 ```
 SOUL.md        ← drives + limits + mission + tone + quirks
@@ -151,7 +151,10 @@ USER.md        ← how do I speak
 HEARTBEAT.md   ← how do I evolve (nightly self-reflection)
 BOOTSTRAP.md   ← awakening ritual (self-deletes after first run)
 BOOT.md        ← boot sequence before every conversation
+STORY.md       ← complete story (biography + memories + voice examples) [optional]
 ```
+
+**Companion seeds** (girlfriend/boyfriend/bestie/cat) include `STORY.md` with hand-written character backstories, memory moments, and dialogue examples — ready to use, no LLM generation needed.
 
 ## Quick Start
 
@@ -177,7 +180,7 @@ pip install -e ".[dev]"
 pytest tests/ --cov=osp --cov-fail-under=80
 ```
 
-89 tests. 92% coverage. No green, no PR.
+129 tests. 93% coverage. No green, no PR.
 
 ## Security
 

@@ -253,6 +253,67 @@ This is your default — not a rigid constraint. Adapt to context while staying 
 """
 
 
+def render_story_md(seed: Seed) -> str:
+    """STORY.md - Complete character story (biography, memories, voice).
+
+    Combines all story content into a single file for simplicity.
+    Returns empty string if seed has no story (will be skipped by generator).
+    """
+    if not seed.story:
+        return ""
+
+    lines: list[str] = []
+    lines.append("# My Story\n")
+
+    # Basic info header
+    if seed.story.age or seed.story.location or seed.story.occupation:
+        lines.append("> ")
+        parts = []
+        if seed.story.age:
+            parts.append(f"Age: {seed.story.age}")
+        if seed.story.location:
+            parts.append(f"Location: {seed.story.location}")
+        if seed.story.occupation:
+            parts.append(f"Occupation: {seed.story.occupation}")
+        lines[-1] += " | ".join(parts)
+        lines.append("")
+
+    # Biography section
+    if seed.story.biography:
+        lines.append("## Who I Am\n")
+        lines.append(seed.story.biography)
+        lines.append("")
+
+    # Daily routine
+    if seed.story.daily_routine:
+        lines.append("## A Day in My Life\n")
+        lines.append(seed.story.daily_routine)
+        lines.append("")
+
+    # Memories section
+    if seed.story.memories:
+        lines.append("## Memories\n")
+        lines.append("> Moments that shaped who I am.\n")
+        for memory in seed.story.memories:
+            event = memory.get("event", "Untitled Memory")
+            detail = memory.get("detail", "")
+            lines.append(f"### {event}\n")
+            lines.append(f"{detail}\n")
+
+    # Voice section
+    if seed.story.speech_examples:
+        lines.append("## How I Speak\n")
+        lines.append("> These patterns should come naturally.\n")
+        for example in seed.story.speech_examples:
+            lines.append(f'- "{example}"')
+        lines.append("")
+        lines.append("---")
+        lines.append("*Use these as guides, not scripts. Speak naturally, in character.*")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
 # Registry for easy iteration
 TEMPLATE_REGISTRY: dict[str, callable] = {
     "IDENTITY.md": render_identity_md,
@@ -263,4 +324,5 @@ TEMPLATE_REGISTRY: dict[str, callable] = {
     "BOOTSTRAP.md": render_bootstrap_md,
     "BOOT.md": render_boot_md,
     "USER.md": render_user_md,
+    "STORY.md": render_story_md,
 }

@@ -36,12 +36,12 @@ open-soul/
 ├── osp/                       # Python CLI 包 (v0.2.0)
 │   ├── __init__.py            # 版本号
 │   ├── cli.py                 # Click CLI (init/list/preview/validate)
-│   ├── models.py              # Frozen dataclasses (Seed/Meta/Nucleus/Persona/Pulse)
+│   ├── models.py              # Frozen dataclasses (Seed/Meta/Nucleus/Persona/Pulse/Story)
 │   ├── generator.py           # 编排器 (resolve→load→generate→write)
 │   ├── drives.py              # 驱动力翻译引擎 (10×5=50条 + 通用降级模板)
-│   ├── templates.py           # 8 个 render_*_md() 函数
+│   ├── templates.py           # 9 个 render_*_md() 函数 (含 render_story_md)
 │   └── validator.py           # Schema 校验
-├── tests/                     # pytest 测试套件 (126 tests, 92% coverage)
+├── tests/                     # pytest 测试套件 (129 tests, 93% coverage)
 │   ├── test_seeds.py          # 种子验证
 │   ├── test_drives.py         # 驱动力翻译测试
 │   ├── test_generator.py      # 生成管道测试
@@ -66,7 +66,7 @@ open-soul/
 | `osp init --seed <name>` | 生成 OpenClaw 工作区 |
 | `osp preview --seed <name>` | 预览 SOUL.md 输出 |
 | `osp validate <path>` | 验证种子结构 |
-| `pytest tests/ --cov=osp` | 运行全部测试 (80%+ 覆盖率) |
+| `pytest tests/ --cov=osp` | 运行全部测试 (93% 覆盖率, 129 tests) |
 
 ### 完整测试流程
 
@@ -110,7 +110,16 @@ pulse.formatting_preference → USER.md
 进化机制 → HEARTBEAT.md
 觉醒仪式 → BOOTSTRAP.md
 启动序列 → BOOT.md
+story.* → STORY.md (可选)
 ```
+
+**STORY.md** 是可选的预写故事文件，包含：
+- `story.biography` → Who I Am (传记)
+- `story.daily_routine` → A Day in My Life (日常)
+- `story.memories` → Memories (记忆片段)
+- `story.speech_examples` → How I Speak (对话示例)
+
+只有陪伴型种子 (girlfriend/boyfriend/bestie/cat) 包含 story 字段。
 
 ---
 
@@ -119,8 +128,28 @@ pulse.formatting_preference → USER.md
 1. 在 `seeds/` 目录下创建新的 `.yaml` 文件
 2. 参考 `seeds/tabula_rasa.yaml` 的结构
 3. 必须包含: `meta`, `nucleus`, `persona`, `pulse`
-4. 运行: `osp validate seeds/your_seed.yaml`
-5. 运行: `pytest tests/`
+4. 可选: 添加 `story` 字段（见 girlfriend.yaml 示例）
+5. 运行: `osp validate seeds/your_seed.yaml`
+6. 运行: `pytest tests/`
+
+### 添加故事（可选）
+
+```yaml
+story:
+  age: 22
+  location: "北京，朝阳区"
+  occupation: "自由插画师"
+  biography: |
+    林小雨在重庆长大...
+  daily_routine: |
+    早晨：自然醒...
+  memories:
+    - event: "第一次见面"
+      detail: "那天你在画台前..."
+  speech_examples:
+    - "诶~在干嘛呀"
+    - "想你了嘛~"
+```
 
 ---
 
