@@ -107,6 +107,7 @@ CORE_FILES = {
     "AGENTS.md",
     "MEMORY.md",
     "HEARTBEAT.md",
+    "EVOLUTION_LOG.md",
     "BOOTSTRAP.md",
     "BOOT.md",
     "USER.md",
@@ -276,3 +277,92 @@ class TestPreviewFile:
         for seed_name in ["tabula_rasa", "glitch", "sentinel", "10x_engineer"]:
             content = preview_file(seed_name)
             assert len(content) > 100
+
+
+# === Real-time Evolution ===
+
+
+class TestRealtimeEvolution:
+    """Tests for real-time evolution features in templates."""
+
+    def test_boot_md_contains_realtime_evolution_section(self, sample_seed: Seed) -> None:
+        """BOOT.md should contain a Real-time Evolution section."""
+        workspace = generate_workspace(sample_seed)
+        boot = workspace["BOOT.md"]
+        assert "Real-time Evolution" in boot
+
+    def test_boot_md_describes_evolution_triggers(self, sample_seed: Seed) -> None:
+        """BOOT.md should describe when to trigger real-time evolution."""
+        workspace = generate_workspace(sample_seed)
+        boot = workspace["BOOT.md"]
+        # Should mention key triggers
+        assert "emotional moment" in boot.lower() or "meaningful" in boot.lower()
+        assert "MEMORY.md" in boot
+
+    def test_boot_md_specifies_small_drive_changes(self, sample_seed: Seed) -> None:
+        """BOOT.md should specify smaller drive changes (0.01-0.03) for real-time."""
+        workspace = generate_workspace(sample_seed)
+        boot = workspace["BOOT.md"]
+        assert "0.01" in boot or "0.03" in boot or "0.01-0.03" in boot
+
+    def test_soul_md_contains_evolution_triggers_section(self, sample_seed: Seed) -> None:
+        """SOUL.md should contain an Evolution Triggers section."""
+        workspace = generate_workspace(sample_seed)
+        soul = workspace["SOUL.md"]
+        assert "Evolution Triggers" in soul
+
+    def test_soul_md_evolution_triggers_describe_moments(self, sample_seed: Seed) -> None:
+        """SOUL.md evolution triggers should describe what counts as trigger moments."""
+        workspace = generate_workspace(sample_seed)
+        soul = workspace["SOUL.md"]
+        # Should mention key trigger types
+        assert "learn" in soul.lower() or "learning" in soul.lower()
+
+    def test_evolution_log_md_supports_realtime_entries(self, sample_seed: Seed) -> None:
+        """EVOLUTION_LOG.md should show format for real-time entries."""
+        workspace = generate_workspace(sample_seed)
+        log = workspace["EVOLUTION_LOG.md"]
+        assert "real-time" in log.lower() or "realtime" in log.lower()
+
+    def test_evolution_log_md_realtime_format_template(self, sample_seed: Seed) -> None:
+        """EVOLUTION_LOG.md should provide a template for real-time entries."""
+        workspace = generate_workspace(sample_seed)
+        log = workspace["EVOLUTION_LOG.md"]
+        # Should have a template section showing how to add real-time entries
+        assert "### Real-time" in log or "### Realtime" in log or "[real-time]" in log
+
+    def test_story_md_instructs_realtime_chapters(self) -> None:
+        """STORY.md should instruct adding chapters during conversation."""
+        seed = Seed.from_dict(
+            {
+                "meta": {
+                    "seed_id": "story_rt_test",
+                    "name": "Story RT Test",
+                    "version": 1.0,
+                    "created_at": "2024-01-01",
+                },
+                "nucleus": {
+                    "drives": {"curiosity": 0.5},
+                    "prime_directives": ["Be kind."],
+                },
+                "persona": {
+                    "current_mission": "Test",
+                    "mission_lock": False,
+                    "memory_summary": "Test",
+                    "unlocked_skills": [],
+                },
+                "pulse": {
+                    "tone": ["friendly"],
+                    "formatting_preference": "text",
+                    "quirks": [],
+                },
+                "story": {
+                    "biography": "Test bio",
+                },
+            }
+        )
+        workspace = generate_workspace(seed)
+        story = workspace["STORY.md"]
+        # Should mention adding chapters during conversation
+        assert "chapter" in story.lower()
+        assert "meaningful" in story.lower() or "moment" in story.lower()

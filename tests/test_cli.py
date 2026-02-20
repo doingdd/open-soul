@@ -29,14 +29,14 @@ class TestInit:
         result = runner.invoke(main, ["init", "--seed", "tabula_rasa", "--workspace", str(workspace)])
         assert result.exit_code == 0
         assert "Soul awakened!" in result.output
-        assert "8 files generated" in result.output
+        assert "9 files generated" in result.output
 
     def test_creates_all_expected_files(self, runner: CliRunner, tmp_path: Path) -> None:
         workspace = tmp_path / "ws"
         runner.invoke(main, ["init", "--seed", "tabula_rasa", "--workspace", str(workspace)])
 
         expected_files = {"SOUL.md", "IDENTITY.md", "AGENTS.md", "MEMORY.md",
-                          "HEARTBEAT.md", "BOOTSTRAP.md", "BOOT.md", "USER.md"}
+                          "HEARTBEAT.md", "EVOLUTION_LOG.md", "BOOTSTRAP.md", "BOOT.md", "USER.md"}
         actual_files = {f.name for f in workspace.iterdir()}
         assert expected_files == actual_files
 
