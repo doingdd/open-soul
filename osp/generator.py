@@ -5,12 +5,16 @@ Pipeline: resolve_seed_path -> load -> validate -> generate -> write
 
 from __future__ import annotations
 
+import json
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
 import yaml
 
-from osp.models import Seed
+import osp
+
+from osp.models import OSPMeta, Seed
 from osp.templates import TEMPLATE_REGISTRY
 from osp.validator import load_seed_data, validate_file
 
@@ -127,6 +131,39 @@ def write_workspace(workspace: dict[str, str], output_dir: Path) -> list[Path]:
     return written
 
 
+def write_osp_meta(output_dir: Path, seed: Seed, seed_file: str) -> Path:
+    """Write workspace metadata to .osp/meta.json.
+
+    Creates the .osp directory if it doesn't exist.
+    Records seed version, install timestamp, and OSP version.
+
+    Args:
+        output_dir: Path to the workspace directory.
+        seed: The seed being installed.
+        seed_file: The seed file name (e.g., "tabula_rasa") for updates.
+
+    Returns:
+        Path to the written meta.json file.
+    """
+    osp_dir = output_dir / ".osp"
+    osp_dir.mkdir(parents=True, exist_ok=True)
+
+    meta = OSPMeta(
+        seed_id=seed.meta.seed_id,
+        seed_name=seed.meta.name,
+        seed_file=seed_file,
+        installed_version=seed.meta.version,
+        installed_at=datetime.now().isoformat(timespec="seconds"),
+        osp_version=osp.__version__,
+    )
+
+    meta_path = osp_dir / "meta.json"
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump(meta.to_dict(), f, indent=2)
+
+    return meta_path
+
+
 def init_workspace(
     seed_name: str,
     output_dir: Path,
@@ -135,6 +172,8 @@ def init_workspace(
     """Full pipeline: resolve -> load -> validate -> generate -> write.
 
     This is the main entry point for the `osp init` command.
+
+    Also writes .osp/meta.json for version tracking.
 
     Raises:
         FileNotFoundError: If seed not found.
@@ -152,8 +191,13 @@ def init_workspace(
     # Generate
     workspace = generate_workspace(seed)
 
-    # Write
-    return write_workspace(workspace, output_dir)
+    # Write workspace files
+    written = write_workspace(workspace, output_dir)
+
+    # Write metadata for version tracking (use seed_name as seed_file)
+    write_osp_meta(output_dir, seed, seed_name)
+
+    return written
 
 
 def preview_file(

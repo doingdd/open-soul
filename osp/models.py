@@ -10,6 +10,48 @@ from typing import Optional
 
 
 @dataclass(frozen=True)
+class OSPMeta:
+    """Workspace metadata for tracking seed version.
+
+    Stored in .osp/meta.json to enable version tracking and updates.
+    """
+
+    seed_id: str
+    seed_name: str
+    seed_file: str  # The seed file name (e.g., "tabula_rasa") for lookup
+    installed_version: float
+    installed_at: str
+    osp_version: str
+
+    @classmethod
+    def from_dict(cls, data: dict) -> OSPMeta:
+        """Create OSPMeta from a dictionary.
+
+        Handles version as string or float.
+        Handles missing seed_file for backward compatibility.
+        """
+        return cls(
+            seed_id=str(data["seed_id"]),
+            seed_name=str(data["seed_name"]),
+            seed_file=str(data.get("seed_file", data.get("seed_id", ""))),
+            installed_version=float(data["installed_version"]),
+            installed_at=str(data["installed_at"]),
+            osp_version=str(data["osp_version"]),
+        )
+
+    def to_dict(self) -> dict:
+        """Serialize OSPMeta to a JSON-compatible dictionary."""
+        return {
+            "seed_id": self.seed_id,
+            "seed_name": self.seed_name,
+            "seed_file": self.seed_file,
+            "installed_version": self.installed_version,
+            "installed_at": self.installed_at,
+            "osp_version": self.osp_version,
+        }
+
+
+@dataclass(frozen=True)
 class Meta:
     """Seed identity metadata."""
 
