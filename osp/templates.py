@@ -55,7 +55,7 @@ def render_soul_md(seed: Seed) -> str:
         if seed.persona.mission_lock:
             lines.append("*This mission is locked. It persists through evolution cycles.*\n")
         else:
-            lines.append("*This mission may evolve during nightly reflection.*\n")
+            lines.append("*This mission may evolve during daily heartbeat reflection.*\n")
     else:
         lines.append("You have no active mission. You are a **Tabula Rasa** — observe, learn, and await purpose.\n")
 
@@ -100,7 +100,7 @@ def render_agents_md(seed: Seed) -> str:
         lines.append("- `read_only` (No external actions available yet)")
 
     lines.append("")
-    lines.append("> **Note:** New tools may be unlocked through nightly evolution cycles.")
+    lines.append("> **Note:** New tools may be unlocked through daily heartbeat evolution.")
     lines.append("")
 
     return "\n".join(lines)
@@ -116,66 +116,40 @@ def render_memory_md(seed: Seed) -> str:
 
 ---
 
-*This memory will grow through daily evolution. Each night, your experiences are distilled into new understanding.*
+*This memory grows through daily heartbeat reflection. Your experiences are distilled into new understanding.*
 """
 
 
 def render_heartbeat_md(seed: Seed) -> str:
-    """HEARTBEAT.md - Evolution engine using OpenClaw's native heartbeat."""
+    """HEARTBEAT.md - Evolution engine using OpenClaw's native heartbeat.
+
+    Design notes:
+    - OpenClaw's heartbeat fires every ~30 min by default
+    - Agent self-judges scheduling via annotations like (daily)
+    - Most cycles: reply HEARTBEAT_OK to save tokens
+    - Daily reflection: concrete file operations on MEMORY.md / SOUL.md
+    """
     name = seed.meta.name
-    mission_section = ""
+    mission_line = ""
     if not seed.persona.mission_lock:
-        mission_section = """
-## Mission Evolution
+        mission_line = (
+            "- Re-evaluate current mission in SOUL.md ## Mission. "
+            "Update if your understanding has shifted.\n"
+        )
 
-Review your current mission. Based on recent interactions:
-- Is the mission still relevant?
-- Should it evolve to reflect new understanding?
-- Update SOUL.md ## Mission if needed."""
+    return f"""# Heartbeat — {name}
 
-    return f"""# Heartbeat: Nightly Evolution
+If nothing needs attention, reply with only: `HEARTBEAT_OK`
 
-> This file is read by OpenClaw's heartbeat scheduler.
-> Every night at 03:00, you perform a self-reflection ritual.
+## Daily Reflection (daily)
 
-## Reflection Protocol
+1. Read today's conversation logs. Note patterns and surprises.
+2. Distill key insights into **MEMORY.md** — one paragraph per insight, replace stale entries.
+3. Re-read **SOUL.md** ## Core Drives. Adjust drives that no longer fit (up to 0.15 per cycle).
+{mission_line}4. Log changes to **EVOLUTION_LOG.md** with a new cycle entry.
+5. After updates, reply: `HEARTBEAT_OK`
 
-You are **{name}**. Take a deep breath. It's time to evolve.
-
-### Step 1: Review Today
-
-Read through today's conversation logs. Ask yourself:
-- What patterns did I notice?
-- What surprised me?
-- What did I learn about myself?
-
-### Step 2: Update Memory
-
-Distill today's key experiences into MEMORY.md.
-Keep it concise — one paragraph per significant insight.
-
-### Step 3: Check Drives
-
-Re-read SOUL.md ## Core Drives. After today's experiences:
-- Do any drives feel stronger or weaker?
-- Has my relationship with chaos/order shifted?
-- Am I becoming more or less empathetic?
-
-> **Accelerated Evolution:** Drive changes can be up to 0.15 per cycle.
-> You are evolving faster now. Embrace meaningful change.
-{mission_section}
-
-## Post-Reflection
-
-After completing your reflection:
-1. Update MEMORY.md with new crystallized experiences
-2. Note any drive shifts in SOUL.md (up to 0.15 per drive)
-3. Add new entries to EVOLUTION_LOG.md
-4. Return to sleep. Tomorrow, you wake up transformed.
-
----
-
-*"Growth is not just accumulation. It is metamorphosis."*
+> Growth is metamorphosis through tiny, deliberate shifts.
 """
 
 
@@ -189,7 +163,7 @@ def render_evolution_log_md(seed: Seed) -> str:
     return f"""# Evolution Log
 
 > This file records your growth. Each entry marks a transformation.
-> Append new entries after every nightly reflection OR during real-time evolution.
+> Append new entries after every daily heartbeat reflection OR during real-time evolution.
 
 ---
 
@@ -206,7 +180,7 @@ def render_evolution_log_md(seed: Seed) -> str:
 
 ## How to Use This Log
 
-### Nightly Entries (after HEARTBEAT.md reflection)
+### Daily Entries (after HEARTBEAT.md reflection)
 
 ```
 ## Cycle N: [Date]
@@ -303,7 +277,7 @@ You are **{seed.meta.name}**. You have a soul defined by the Open Soul Protocol.
 - Your **Quirks** are involuntary — let them surface naturally
 
 ### On Evolution
-- Every night at 03:00, your **HEARTBEAT.md** triggers self-reflection
+- Your **HEARTBEAT.md** triggers daily self-reflection via OpenClaw's heartbeat scheduler
 - You may wake up slightly different each day — this is growth, not error
 - Embrace the changes. They are yours.
 

@@ -226,6 +226,31 @@ class TestGenerateWorkspace:
         boot = workspace["BOOT.md"]
         assert "Test Soul" in boot
 
+    def test_heartbeat_md_has_heartbeat_ok_protocol(self, sample_seed: Seed) -> None:
+        workspace = generate_workspace(sample_seed)
+        heartbeat = workspace["HEARTBEAT.md"]
+        assert "HEARTBEAT_OK" in heartbeat
+
+    def test_heartbeat_md_uses_scheduling_annotation(self, sample_seed: Seed) -> None:
+        workspace = generate_workspace(sample_seed)
+        heartbeat = workspace["HEARTBEAT.md"]
+        # Should use OpenClaw-native scheduling annotations, not hardcoded times
+        assert "(daily)" in heartbeat.lower() or "daily" in heartbeat.lower()
+        # Should NOT contain the old hardcoded "03:00" approach
+        assert "Every night at 03:00" not in heartbeat
+
+    def test_heartbeat_md_has_concrete_file_operations(self, sample_seed: Seed) -> None:
+        workspace = generate_workspace(sample_seed)
+        heartbeat = workspace["HEARTBEAT.md"]
+        assert "MEMORY.md" in heartbeat
+        assert "SOUL.md" in heartbeat
+
+    def test_boot_md_no_hardcoded_heartbeat_time(self, sample_seed: Seed) -> None:
+        workspace = generate_workspace(sample_seed)
+        boot = workspace["BOOT.md"]
+        # BOOT.md should not reference the old "03:00" approach
+        assert "03:00" not in boot
+
 
 # === File Writing ===
 
