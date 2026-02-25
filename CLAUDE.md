@@ -35,22 +35,27 @@ open-soul/
 │   └── cat.yaml               # 猫种 (The Cat)
 ├── osp/                       # Python CLI 包 (v0.2.0)
 │   ├── __init__.py            # 版本号
-│   ├── cli.py                 # Click CLI (init/list/preview/validate)
+│   ├── cli.py                 # Click CLI (init/list/preview/validate/status/update)
 │   ├── models.py              # Frozen dataclasses (Seed/Meta/Nucleus/Persona/Pulse/Story)
 │   ├── generator.py           # 编排器 (resolve→load→generate→write)
 │   ├── drives.py              # 驱动力翻译引擎 (10×5=50条 + 通用降级模板)
-│   ├── templates.py           # 9 个 render_*_md() 函数 (含 render_story_md)
+│   ├── templates.py           # 10 个 render_*_md() 函数 (含 EVOLUTION_LOG/STORY)
+│   ├── merger.py              # 智能合并器 (SOUL/AGENTS/STORY 的增量更新)
+│   ├── updater.py             # 工作区更新器 (备份→diff→merge→write)
 │   └── validator.py           # Schema 校验
-├── tests/                     # pytest 测试套件 (129 tests, 93% coverage)
+├── tests/                     # pytest 测试套件 (286 tests, 96% coverage)
 │   ├── test_seeds.py          # 种子验证
 │   ├── test_drives.py         # 驱动力翻译测试
 │   ├── test_generator.py      # 生成管道测试
 │   ├── test_cli.py            # CLI 命令测试
+│   ├── test_templates.py      # 模板渲染测试
+│   ├── test_merger.py         # 智能合并测试
+│   ├── test_updater.py        # 工作区更新测试
 │   └── requirements.txt       # 测试依赖
 ├── .github/workflows/ci.yaml  # CI (pytest + coverage + e2e)
 ├── pyproject.toml             # 现代 Python 打包配置
-├── README.md                  # 使用说明 (中文)
-├── README_EN.md               # 使用说明 (English)
+├── README.md                  # 使用说明 (English, 默认)
+├── README_CN.md               # 使用说明 (简体中文)
 ├── LICENSE                    # MIT License
 └── .gitignore
 ```
@@ -66,7 +71,9 @@ open-soul/
 | `osp init --seed <name>` | 生成 OpenClaw 工作区 |
 | `osp preview --seed <name>` | 预览 SOUL.md 输出 |
 | `osp validate <path>` | 验证种子结构 |
-| `pytest tests/ --cov=osp` | 运行全部测试 (93% 覆盖率, 129 tests) |
+| `osp status --workspace <path>` | 查看工作区状态和版本信息 |
+| `osp update --workspace <path>` | 更新工作区（保留记忆和进化历史） |
+| `pytest tests/ --cov=osp` | 运行全部测试 (96% 覆盖率, 286 tests) |
 
 ### 完整测试流程
 
@@ -85,7 +92,7 @@ pytest tests/ --cov=osp --cov-report=term-missing --cov-fail-under=80 -v
 - **翻译**: drives.py 将数值翻译为 5 档自然语言描述
 
 ### Layer 2: Persona (交互)
-- **变更频率**: 每晚进化
+- **变更频率**: 每日心跳进化 + 实时进化
 - **内容**: 当前使命 (current_mission)、记忆结晶 (memory_summary)、已解锁技能 (unlocked_skills)
 
 ### Layer 3: Pulse (表现)
@@ -107,9 +114,10 @@ persona.memory_summary → MEMORY.md
 pulse.tone → SOUL.md ## Vibe
 pulse.quirks → SOUL.md ## Quirks
 pulse.formatting_preference → USER.md
-进化机制 → HEARTBEAT.md
+进化机制 → HEARTBEAT.md (HEARTBEAT_OK 协议 + daily 调度)
+进化日志 → EVOLUTION_LOG.md
 觉醒仪式 → BOOTSTRAP.md
-启动序列 → BOOT.md
+启动序列 → BOOT.md (含实时进化指令)
 story.* → STORY.md (可选)
 ```
 
